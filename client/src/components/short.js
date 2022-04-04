@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { validateAlias } from '../services/validateURL.js'
 
 const Short = () => {
     const [form, setForm] = useState({
@@ -12,14 +13,21 @@ const Short = () => {
             return {...prev, ...value}
         })
     };
-
+    
     const onSubmit = async (e) => { 
         e.preventDefault();
-
-        //TODO: change when user accounts are setup
+        console.log('submit')
+        
         const newShort = {...form};
 
-        await fetch('http://localhost:5000/short', {
+        if (!validateAlias(newShort)){
+            window.alert('invalid alias: ' + newShort.short);
+            return;
+        }
+        //TODO: change when user accounts are setup
+        
+
+        let res = await fetch('http://localhost:5000/short/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',            
@@ -30,7 +38,10 @@ const Short = () => {
             window.alert(error);
             return;
         });
+
+        console.log(res);
         
+
         setForm({ long: '', short: ''});
     }
 
@@ -41,20 +52,20 @@ const Short = () => {
                 <label htmlFor='long'>Your URL</label>
                 <input 
                     type='text'
-                    className='form-control'
+                    className='form-control form-control-lg'
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
             </div>
             <div class='form-group p-2'>
-                <label htmlFor='long'>Customize your link</label>
+                <label htmlFor='long'>Customize your link (optional)</label>
                 <div class='input-group'>
                     <span class="input-group-text" id="basic-addon1">https://shortearl.com/</span>
                     <input 
                         type='text'
-                        className='form-control'
+                        className='form-control form-control-lg'
                         id='short'
-                        aria-describedby="basic-addon2"
+                        aria-describedby="basic-addon1"
                         value={form.short}
                         onChange={ (e) => updateForm({ short: e.target.value }) }/> 
                 </div>

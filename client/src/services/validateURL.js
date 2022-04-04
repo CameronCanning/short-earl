@@ -6,7 +6,15 @@ export const validateAlias = (alias) => {
     return false;
 }
 
-export const validateURL = (url) => {
-    return true;
+export const validateURL = (_url) => {
+
+    let url;
+    try {
+        url = new URL(_url);
+    }
+    catch (_) {
+        return false;
+    }
+    return url.protocol === 'http:' || url.protocol === 'https:';
 }
 
