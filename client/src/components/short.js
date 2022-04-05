@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { validateAlias } from '../services/validateURL.js'
+import { validateAlias, validateURL } from '../services/validateURL.js'
 
 const Short = () => {
     const [form, setForm] = useState({
         long: '',
         short: '',
     });
+    const [complete, setComplete] = useState(false);
 
     const updateForm = (value) => {
         return setForm((prev) => {
@@ -16,23 +17,25 @@ const Short = () => {
     
     const onSubmit = async (e) => { 
         e.preventDefault();
-        console.log('submit')
         
-        const newShort = {...form};
+        const newEarl = {...form};
 
-        if (!validateAlias(newShort)){
-            window.alert('invalid alias: ' + newShort.short);
+        if (!validateURL(newEarl.long)){
+            window.alert('invalid url: ' + newEarl.long);
             return;
         }
-        //TODO: change when user accounts are setup
-        
+        if (form.short && !validateAlias(newEarl.short)){
+            window.alert('invalid alias: ' + newEarl.short);
+            return;
+        }
 
+        //TODO: change when user accounts are setup
         let res = await fetch('http://localhost:5000/short/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',            
             },
-            body: JSON.stringify(newShort),
+            body: JSON.stringify(newEarl)
         })
         .catch(error => {
             window.alert(error);
@@ -40,7 +43,6 @@ const Short = () => {
         });
 
         console.log(res);
-        
 
         setForm({ long: '', short: ''});
     }

@@ -7,12 +7,18 @@ export const validateAlias = (alias) => {
 }
 
 export const validateURL = (_url) => {
+    if (!/^https?:\/\//i.test(_url)) {
+        _url = 'http://' + _url;
+    }
 
     let url;
+
     try {
-        url = new URL(_url);
+        url = new URL(_url); 
+        
     }
-    catch (_) {
+    catch (e) {
+        console.log(e);
         return false;
     }
     return url.protocol === 'http:' || url.protocol === 'https:';
