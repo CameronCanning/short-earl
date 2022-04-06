@@ -13,8 +13,10 @@ const Short = () => {
         short: '',
         shortMessage: '',
         long: '',
+        longMessage: ''
     });
 
+    let navigate = useNavigate();
 
     const updateForm = (value) => {
         return setForm((prev) => {
@@ -31,12 +33,18 @@ const Short = () => {
         e.preventDefault();
         
         const newEarl = {...form};
+
+        //Validate form
         let abort = false;
-        if (!validateURL(newEarl.long)){
-            updateValidated({long: 'is-invalid'})
+        if (form.short == ''){
+            updateValidated({long: 'is-invalid', longMessage: 'Required'});
             abort = true;
         }
-        else updateValidated({long: ''});
+        else if (!validateURL(newEarl.long)){
+            updateValidated({long: 'is-invalid', longMessage: 'Invalid URL'});
+            abort = true;
+        }
+        else updateValidated({long: '', longMessage: ''});
 
         if (form.short && !validateAlias(newEarl.short)){          
             updateValidated({
@@ -51,8 +59,10 @@ const Short = () => {
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
             if (res.data.status == 'success'){
-                //do nav to final card
-                setForm({...form, short: res.data.earl});
+                navigate('/saved', {
+                    long: form.long,
+                    short: res.data.earl,
+                });
             }
             else if (res.data.status == 'earl_taken'){
                 updateValidated({
@@ -65,14 +75,10 @@ const Short = () => {
             window.alert(error);
             return;
         });
-        
-
-
-        
     }
 
     return(
-        <div class='shadow-sm' style={{maxWidth: '360px', margin: '0 auto', float: 'none'}}>
+        <div class='border main mt-3'>
         <form onSubmit={onSubmit} class = 'needs-validation' novalidate>
             <div class='form-group p-2'>
                 <label for='long'>Paste your URL</label>
@@ -82,7 +88,7 @@ const Short = () => {
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
-                    <span class="invalid-feedback">Invalid URL</span> 
+                    <span class="invalid-feedback">{validated.longMessage}</span> 
             </div>
             <div class='form-group p-2'>
                 <label for='short'>Customize your link (optional)</label>
@@ -102,7 +108,7 @@ const Short = () => {
                 <input
                     type='submit'
                     value='Shorten URL'
-                    className='btn btn-dark'/>
+                    className='btn btn-dark btn-lg'/>
             </div>
         </form>        
         </div>
@@ -110,3 +116,11 @@ const Short = () => {
     )
 }
 export default Short;
+
+/**
+ * change form onSubmit
+ * input readonly:
+ *      change input updates to null
+ *      change buttons     
+ *      
+ */
