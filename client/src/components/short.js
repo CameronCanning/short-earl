@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { validateAlias, validateURL } from '../services/validateURL.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFish } from '@fortawesome/free-solid-svg-icons'
+import {} from '@fortawesome/react-fontawesome';
 const axios = require('axios');
 
 
@@ -89,8 +92,12 @@ const Short = () => {
         <div class='border main mt-3'> 
         <form onSubmit={onSubmit} class = 'needs-validation' novalidate >           
             <div class='form-group p-2'>
+                
                 <label for='long'>
-                    {complete ? 'Your long URL' : 'Paste your URL'}
+                    <i class="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
+                    <FontAwesomeIcon icon={faFish} />
+                    <FontAwesomeIcon icon='coffee' />
+                    {complete ? ' Your long URL'  : ' Paste your URL'}
                 </label>
                 <input                 
                     readOnly={complete}
@@ -103,7 +110,8 @@ const Short = () => {
             </div>
             <div class='form-group p-2'>
                 <label for='short'>
-                    { complete ? 'short-earl' : 'Customize your link (optional)' }
+                    <i class="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
+                    { complete ? ' short-earl' : ' Customize your link (optional)' }
                 </label>
                 <div class='input-group input-group-lg has-validation'>
                     {!complete && 
@@ -115,9 +123,14 @@ const Short = () => {
                         className={'form-control form-control-lg ' + validated.short}
                         id='short'
                         value={form.short}
-                        
-                        onChange={ (e) => updateForm({ short: e.target.value }) }/>    
-                        <div class="invalid-feedback">{validated.shortMessage}</div>                                                                                          
+                        onChange={ (e) => updateForm({ short: e.target.value }) }/>  
+                        {complete &&
+                            <button class="btn btn-outline-secondary" type="button" >
+                                Copy
+                            </button>
+                        }
+                        <div class="invalid-feedback">{validated.shortMessage}</div>     
+                                                                                                             
                 </div>                
             </div>
             <div className='form-group p-2'>
