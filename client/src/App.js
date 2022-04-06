@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import NavBar from "./components/navbar";
 //import RecordList from "./components/recordList";
 //import Edit from "./components/edit";
@@ -9,8 +9,8 @@ const App = () => {
         <div>
             <NavBar/>
             <Routes>                
-                <Route path="/" element={<Short />} />
-                <Route path="/finished" element={<Short />} />
+                <Route path="/" element={<Navigate to='/app'/>}/>
+                <Route path="/app" element={<Short/>}/>
             </Routes>
         </div>
     )

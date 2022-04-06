@@ -16,6 +16,12 @@ const Short = () => {
         longMessage: ''
     });
 
+    const [complete, setComplete] = useState(false);
+
+
+    const baseURL = 'https://shortearl.com/';
+
+
     let navigate = useNavigate();
 
     const updateForm = (value) => {
@@ -36,7 +42,7 @@ const Short = () => {
 
         //Validate form
         let abort = false;
-        if (form.short == ''){
+        if (form.long == ''){
             updateValidated({long: 'is-invalid', longMessage: 'Required'});
             abort = true;
         }
@@ -59,10 +65,11 @@ const Short = () => {
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
             if (res.data.status == 'success'){
-                navigate('/saved', {
+                updateForm({
                     long: form.long,
-                    short: res.data.earl,
+                    short: baseURL + res.data.earl,
                 });
+                setComplete(true);
             }
             else if (res.data.status == 'earl_taken'){
                 updateValidated({
@@ -78,37 +85,45 @@ const Short = () => {
     }
 
     return(
-        <div class='border main mt-3'>
-        <form onSubmit={onSubmit} class = 'needs-validation' novalidate>
+        
+        <div class='border main mt-3'> 
+        <form onSubmit={onSubmit} class = 'needs-validation' novalidate >           
             <div class='form-group p-2'>
-                <label for='long'>Paste your URL</label>
-                <input 
+                <label for='long'>
+                    {complete ? 'Your long URL' : 'Paste your URL'}
+                </label>
+                <input                 
+                    readOnly={complete}
                     type='text'
                     className={'form-control form-control-lg ' + validated.long}
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
-                    <span class="invalid-feedback">{validated.longMessage}</span> 
+                    <div class="invalid-feedback">{validated.longMessage}</div> 
             </div>
             <div class='form-group p-2'>
-                <label for='short'>Customize your link (optional)</label>
+                <label for='short'>
+                    { complete ? 'short-earl' : 'Customize your link (optional)' }
+                </label>
                 <div class='input-group input-group-lg has-validation'>
-                    <span class="input-group-text" id="basic-addon1">https://shortearl.com/</span>
+                    {!complete && 
+                        <span class="input-group-text" id="basic-addon1">{baseURL}</span>
+                    }
                     <input 
+                        readOnly={complete}
                         type='text'
                         className={'form-control form-control-lg ' + validated.short}
                         id='short'
                         value={form.short}
-                        aria-describedby="basic-addon2"
+                        
                         onChange={ (e) => updateForm({ short: e.target.value }) }/>    
                         <div class="invalid-feedback">{validated.shortMessage}</div>                                                                                          
                 </div>                
             </div>
             <div className='form-group p-2'>
-                <input
-                    type='submit'
-                    value='Shorten URL'
-                    className='btn btn-dark btn-lg'/>
+                {complete                     
+                    ? <button type='button' className='btn btn-dark btn-lg'>Shorten Another</button>
+                    : <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}                
             </div>
         </form>        
         </div>
