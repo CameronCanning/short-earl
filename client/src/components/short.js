@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { validateAlias, validateURL } from '../services/validateURL.js'
+//import { useNavigate } from 'react-router';
+import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFish } from '@fortawesome/free-solid-svg-icons'
-import {} from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons'
 const axios = require('axios');
 
 
@@ -12,74 +11,55 @@ const Short = () => {
         long: '',
         short: '',
     });
-    const [validated, setValidated] = useState({
-        short: '',
-        shortMessage: '',
-        long: '',
-        longMessage: ''
+    const [validation, setValidation] = useState({
+        long: {
+            status: '',
+            error: ''
+        },
+        short: {
+            status: '',
+            error: ''
+        }        
     });
 
     const [complete, setComplete] = useState(false);
 
 
-    const baseURL = 'https://shortearl.com/';
-
-
-    let navigate = useNavigate();
+    const DOMAIN = 'https://shortearl.com/';
 
     const updateForm = (value) => {
         return setForm((prev) => {
             return {...prev, ...value}
         })
     };
-    const updateValidated = (value) => {
-        return setValidated((prev) => {
-            return {...prev, ...value}
-        })
-    };
 
-    const onSubmit = async (e) => { 
+    const onSubmit = (e) => { 
         e.preventDefault();
         
         const newEarl = {...form};
-
-        //Validate form
-        let abort = false;
-        if (form.long == ''){
-            updateValidated({long: 'is-invalid', longMessage: 'Required'});
-            abort = true;
-        }
-        else if (!validateURL(newEarl.long)){
-            updateValidated({long: 'is-invalid', longMessage: 'Invalid URL'});
-            abort = true;
-        }
-        else updateValidated({long: '', longMessage: ''});
-
-        if (form.short && !validateAlias(newEarl.short)){          
-            updateValidated({
-                short: 'is-invalid',
-                shortMessage: 'Must be 3-20 characters using only Aa-Zz, 0-9, -, _'});        
-            abort = true;
-        }
-        else updateValidated({short: ''});
-
-        if (abort) return;
+        let newValidation = validateEarl(newEarl);
+        setValidation(newValidation);
+        if (newValidation.short.status == INVALID || newValidation.long.status == INVALID) return;
 
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
             if (res.data.status == 'success'){
                 updateForm({
                     long: form.long,
-                    short: baseURL + res.data.earl,
+                    short: DOMAIN + res.data.earl,
                 });
                 setComplete(true);
             }
             else if (res.data.status == 'earl_taken'){
-                updateValidated({
-                    short: 'is-invalid',
-                    shortMessage: 'Alias is taken'});
+                setValidation( (prev) => {
+                    return { 
+                        ...prev,
+                        short: {
+                            status: 'is-invalid',
+                            error: 'Alias is taken'
+                        }
+                    }});
             }
-                
         })
         .catch(error => {
             window.alert(error);
@@ -89,54 +69,53 @@ const Short = () => {
 
     return(
         
-        <div class='border main mt-3'> 
-        <form onSubmit={onSubmit} class = 'needs-validation' novalidate >           
-            <div class='form-group p-2'>
+        <div className='border main mt-3'> 
+        <form onSubmit={onSubmit} className = 'needs-validation' noValidate>           
+            <div className='form-group p-2'>
                 
-                <label for='long'>
-                    <i class="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
-                    <FontAwesomeIcon icon={faFish} />
-                    <FontAwesomeIcon icon='coffee' />
+                <label htmlFor='long'>
+                    <i className="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
                     {complete ? ' Your long URL'  : ' Paste your URL'}
                 </label>
                 <input                 
                     readOnly={complete}
                     type='text'
-                    className={'form-control form-control-lg ' + validated.long}
+                    className={'form-control form-control-lg ' + validation.long.status}
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
-                    <div class="invalid-feedback">{validated.longMessage}</div> 
+                    <div className="invalid-feedback">{validation.long.error}</div> 
             </div>
-            <div class='form-group p-2'>
-                <label for='short'>
-                    <i class="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
+            <div className='form-group p-2'>
+                <label htmlFor='short'>
+                    <i className="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
                     { complete ? ' short-earl' : ' Customize your link (optional)' }
                 </label>
-                <div class='input-group input-group-lg has-validation'>
+                <div className='input-group input-group-lg has-validation'>
                     {!complete && 
-                        <span class="input-group-text" id="basic-addon1">{baseURL}</span>
+                        <span className="input-group-text" id="basic-addon1">{DOMAIN}</span>
                     }
                     <input 
                         readOnly={complete}
                         type='text'
-                        className={'form-control form-control-lg ' + validated.short}
+                        className={'form-control form-control-lg ' + validation.short.status}
                         id='short'
                         value={form.short}
                         onChange={ (e) => updateForm({ short: e.target.value }) }/>  
                         {complete &&
-                            <button class="btn btn-outline-secondary" type="button" >
-                                Copy
+                            <button className="btn btn-dark" type="button" onClick={() => {navigator.clipboard.writeText(form.short)}}>
+                                <FontAwesomeIcon icon={faCopy} />
                             </button>
                         }
-                        <div class="invalid-feedback">{validated.shortMessage}</div>     
+                        <div className="invalid-feedback">{validation.short.error}</div>     
                                                                                                              
                 </div>                
             </div>
-            <div className='form-group p-2'>
+            <div className='form-group p-2 d-grid gap-2'>
                 {complete                     
-                    ? <button type='button' className='btn btn-dark btn-lg'>Shorten Another</button>
-                    : <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}                
+                    ? [<button type='button' key='1' className='btn btn-dark btn-lg btn-block'>Shorten Another</button>,
+                       <button type='button' key='2' className='btn btn-outline-dark btn-lg '>My Earls</button>]
+                    :  <button type='submit' className='btn btn-dark btn-lg btn-block'>Shorten URL</button>}                
             </div>
         </form>        
         </div>
