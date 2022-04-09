@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 
 import { NavLink } from "react-router-dom";
 
@@ -10,15 +11,15 @@ export default function NavBar() {
                     <button
                         className="navbar-toggler shadow-none border-0 ps-0"
                         type="button"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasNavbar"
-                        aria-controls="offcanvasNavbar"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarToggleExternalContent"
+                        aria-controls="navbarToggleExternalContent"
                         aria-expanded="false"
                         aria-label="Toggle navigation"
                         >
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <NavLink className="navbar-brand mb-0 h1" to="/">short-earl</NavLink>
+                    <NavLink className="navbar-brand mb-0 me-0 h1" to="/">short-earl</NavLink>
                     <div className="collapse navbar-collapse justify-content-end me-0" id="navbarDropDown">  
                         <ul className="navbar-nav me-1 mb-lg-0">
                             <li className='nav-item'>
@@ -33,22 +34,16 @@ export default function NavBar() {
                         </NavLink> 
                     </div>
                 </div>   
-            </nav>
-            <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div className="offcanvas-header justify-content-end">
-                    <button type="button" className="btn-close text-reset pe-3 pt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </nav>   
+            <div className="collapse" id="navbarToggleExternalContent">  
+                <div className="bg-light p-1">
+                    <div className='m-2 mt-0 border-top'>
+                        <NavLink className='nav-link link-dark ps-1' to='/app'>My Earls</NavLink>
+                        <NavLink className='nav-link link-dark ps-1' to='/login'>Login</NavLink>
+                        <NavLink className='nav-link link-dark ps-1' to='signup'>Signup</NavLink>
+                    </div>
+                    
                 </div>
-                <div className="offcanvas-body">
-                    <ul className="navbar-nav flex-grow-1 pe-3 float-end">
-                        <li className="nav-item">
-                            <a className="nav-link active " aria-current="page" href="#">Home</a>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className='nav-link' to='/urls'>My Earls</NavLink> 
-                        </li>
-                        <NavLink className='nav-link' to='/urls'>My Earls</NavLink>
-                    </ul>
-                </div>
-            </div>            
+            </div>      
         </div>
     )}
