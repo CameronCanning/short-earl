@@ -30,6 +30,10 @@ const Short = () => {
 
     const DOMAIN = 'https://shortearl.com/';
 
+    const resetForm = () => {
+        setForm({long: '', short: ''});
+        setComplete(false);
+    }
     const updateForm = (value) => {
         return setForm((prev) => {
             return {...prev, ...value}
@@ -72,11 +76,9 @@ const Short = () => {
 
     return(
         
-        <div className='border main mt-3'> 
-        <form onSubmit={onSubmit} className = 'needs-validation' noValidate>      
-
+        <div className='main border rounded-3 mt-3'> 
+        <form onSubmit={onSubmit} className='needs-validation' noValidate>      
             <div className='form-group p-2'>
-                
                 <label htmlFor='long'>
                     <i className="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
                     {complete ? ' Your long URL'  : ' Paste your URL'}
@@ -84,7 +86,7 @@ const Short = () => {
                 <input                 
                     readOnly={complete}
                     type='text'
-                    className={'form-control form-control-lg ' + validation.long.status}
+                    className={'form-control form-control-lg bg-white ' + validation.long.status}
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
@@ -103,7 +105,7 @@ const Short = () => {
                     <input 
                         readOnly={complete}
                         type='text'
-                        className={'form-control form-control-lg ' + validation.short.status}
+                        className={'form-control form-control-lg bg-white ' + validation.short.status}
                         id='short'
                         value={form.short}
                         onChange={ (e) => updateForm({ short: e.target.value }) }/>  
@@ -133,16 +135,24 @@ const Short = () => {
                             </Overlay> 
                             </>
                         }
-                        <div className="invalid-feedback">{validation.short.error}</div>     
-                                                                                                             
+                        <div className="invalid-feedback">{validation.short.error}</div>                                                                            
                 </div>                
             </div>
-
-            <div className='form-group p-2 d-grid gap-2'>
-                {complete                     
-                    ? [<button type='button' key='1' className='btn btn-dark btn-lg btn-block'>Shorten Another</button>,
-                       <button type='button' key='2' className='btn btn-outline-dark btn-lg '>My Earls</button>]
-                    :  <button type='submit' className='btn btn-dark btn-lg btn-block'>Shorten URL</button>}                
+            <div className='p-2 pt-3 d-grid gap-3 col-12 mx-auto '>
+            {complete 
+                ? 
+                <>
+                <button 
+                    type='button' 
+                    key='1' 
+                    className='btn btn-dark btn-lg' 
+                    onClick={resetForm}>
+                    Shorten Another
+                </button>
+                <button type='button' key='2' className='btn btn-outline-dark btn-lg'>My Earls</button>
+                </>
+                :
+                <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
             </div>
         </form>        
         </div>
