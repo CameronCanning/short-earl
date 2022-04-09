@@ -124,7 +124,7 @@ const Short = () => {
                             >
                                 <FontAwesomeIcon icon={faCopy} />
                             </button>
-                            <Overlay target={target.current} show={showTooltip} placement="right">
+                            <Overlay target={target.current} show={showTooltip} placement="top">
                                 {(props) => (
                                     <Tooltip id="copy-tt" {...props}>
                                         Copied
