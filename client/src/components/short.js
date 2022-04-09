@@ -22,8 +22,7 @@ const Short = () => {
             error: ''
         }        
     });
-    const [complete, setComplete] = useState(true);
-
+    const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     const target = useRef(null);
     
@@ -116,7 +115,10 @@ const Short = () => {
                                 onClick={() => {
                                     navigator.clipboard.writeText(form.short);
                                     setShowTooltip(true);
-                                    setTimeout(() => setShowTooltip(false), 1000);
+                                    setTimeout(() => {
+                                        target.current.blur(); 
+                                        setShowTooltip(false);                                                 
+                                    }, 1500);
                                     }}
                                 ref={target}
                             >
