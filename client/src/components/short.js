@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 //import { useNavigate } from 'react-router';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import { Tooltip, Overlay } from 'react-bootstrap';
 const axios = require('axios');
 
 
@@ -21,8 +22,11 @@ const Short = () => {
             error: ''
         }        
     });
+    const [complete, setComplete] = useState(true);
 
-    const [complete, setComplete] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const target = useRef(null);
+    
 
 
     const DOMAIN = 'https://shortearl.com/';
@@ -39,18 +43,18 @@ const Short = () => {
         const newEarl = {...form};
         let newValidation = validateEarl(newEarl);
         setValidation(newValidation);
-        if (newValidation.short.status == INVALID || newValidation.long.status == INVALID) return;
+        if (newValidation.short.status === INVALID || newValidation.long.status === INVALID) return;
 
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
-            if (res.data.status == 'success'){
+            if (res.data.status === 'success'){
                 updateForm({
                     long: form.long,
                     short: DOMAIN + res.data.earl,
                 });
                 setComplete(true);
             }
-            else if (res.data.status == 'earl_taken'){
+            else if (res.data.status === 'earl_taken'){
                 setValidation( (prev) => {
                     return { 
                         ...prev,
@@ -70,7 +74,8 @@ const Short = () => {
     return(
         
         <div className='border main mt-3'> 
-        <form onSubmit={onSubmit} className = 'needs-validation' noValidate>           
+        <form onSubmit={onSubmit} className = 'needs-validation' noValidate>      
+
             <div className='form-group p-2'>
                 
                 <label htmlFor='long'>
@@ -86,6 +91,7 @@ const Short = () => {
                     onChange={ (e) => updateForm({ long: e.target.value }) }/>
                     <div className="invalid-feedback">{validation.long.error}</div> 
             </div>
+
             <div className='form-group p-2'>
                 <label htmlFor='short'>
                     <i className="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
@@ -103,14 +109,33 @@ const Short = () => {
                         value={form.short}
                         onChange={ (e) => updateForm({ short: e.target.value }) }/>  
                         {complete &&
-                            <button className="btn btn-dark" type="button" onClick={() => {navigator.clipboard.writeText(form.short)}}>
+                            <>
+                            <button 
+                                className="btn btn-dark" 
+                                type="button" 
+                                onClick={() => {
+                                    navigator.clipboard.writeText(form.short);
+                                    setShowTooltip(true);
+                                    setTimeout(() => setShowTooltip(false), 1000);
+                                    }}
+                                ref={target}
+                            >
                                 <FontAwesomeIcon icon={faCopy} />
                             </button>
+                            <Overlay target={target.current} show={showTooltip} placement="right">
+                                {(props) => (
+                                    <Tooltip id="copy-tt" {...props}>
+                                        Copied
+                                    </Tooltip>
+                                )}
+                            </Overlay> 
+                            </>
                         }
                         <div className="invalid-feedback">{validation.short.error}</div>     
                                                                                                              
                 </div>                
             </div>
+
             <div className='form-group p-2 d-grid gap-2'>
                 {complete                     
                     ? [<button type='button' key='1' className='btn btn-dark btn-lg btn-block'>Shorten Another</button>,
@@ -123,11 +148,3 @@ const Short = () => {
     )
 }
 export default Short;
-
-/**
- * change form onSubmit
- * input readonly:
- *      change input updates to null
- *      change buttons     
- *      
- */

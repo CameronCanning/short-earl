@@ -19,7 +19,7 @@ const validateURL = (url) => {
 		'(\\#[-a-z\\d_]*)?$',
 		'i'
 	);
-	if (url.length == 0) return {status: INVALID, error: 'URL Required'}; //Empty field	
+	if (url.length === 0) return {status: INVALID, error: 'URL Required'}; //Empty field	
 	else if (url.length >= 10000) return {status: INVALID, error: 'URL must be less than 10000 characters'}; //Too Long	
 	else if (!urlPattern.test(url)) return {status: INVALID, error: 'Invalid URL'}; //Invalid URL
 	return {status: VALID, error: ''};
