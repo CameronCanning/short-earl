@@ -1,5 +1,12 @@
 
-$spinner-animation-speed: 3s;
+
+
+
+
+
+@import 'bootstrap/scss/bootstrap.scss';
+
+
 
 .main {
     max-width: 400px;
@@ -16,7 +23,3 @@ label {
 input:-webkit-autofill { 
     -webkit-background-clip: text;
 }
-
-@import 'bootstrap/dist/css/bootstrap.min.css';
-@import 'bootstrap/scss/bootstrap.scss';
-

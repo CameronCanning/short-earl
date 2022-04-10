@@ -25,10 +25,17 @@ router.route("/short/:id").get(function (req, res) {
 	let db_connect = dbo.getDb();
 	let myquery = { _id: req.params.id};
 	db_connect
-		.collection("urls")
+		.collection("urls") 
 		.findOne(myquery, (err, result) => {
-			if (err) throw err;		
-			res.json(result);
+			if (err) throw err;	
+			if (!result) {
+				console.log(`GET failed: ${req.params.id}`);
+				res.status(404).end();
+			}
+			else {
+				console.log('')	
+				res.json(result);
+			}
 		});
 });
 
