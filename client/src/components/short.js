@@ -29,11 +29,11 @@ const Short = () => {
     const [showTooltip, setShowTooltip] = useState(false);
     const target = useRef(null);
     
-    const DOMAIN = 'https://shortearl.com/';
+    const DOMAIN = 'localhost:3000/';
 
-    const setValidationByName = (formName, {_status, _error} = {}) => {
+    const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
-            return {...prev, [formName]: {status: _status, error: _error}}
+            return {...prev, [formName]: {status: status, error: error}}
         });
     }
 
@@ -43,9 +43,7 @@ const Short = () => {
     }
 
     const updateForm = ({field, value}) => {
-        if (!value) {
-            setValidationByName(field);
-        }
+        setValidationByName(field, {status: '', error: ''});
         return setForm((prev) => {
             return {...prev, [field]: value}
         })
@@ -56,14 +54,15 @@ const Short = () => {
         
         const newEarl = {...form};
         let newValidation = validateEarl(newEarl);
-        setValidation(newValidation);
-        if (newValidation.long.status === INVALID || newValidation.short.status === INVALID) return;
+        
+        if (newValidation.long.status === INVALID || newValidation.short.status === INVALID){
+            return setValidation(newValidation);
+        };
 
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
             if (res.data.status === 'success'){
-                console.log('suc');
-                updateForm({
+                setForm({
                     long: form.long,
                     short: DOMAIN + res.data.earl,
                 });

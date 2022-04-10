@@ -6,11 +6,13 @@ const axios = require('axios');
 const Redirect = () => {
     const [loading, setLoading] = useState(true);
     const { earl } = useParams();
-
+    
     axios.get(`http://localhost:5000/short/${earl}`)
     .then( (res) => {
-        console.log(res.data.long);
-    });
+        let url = res.data.long.replace(/https?:/, '');
+        console.log(`//${res.data.long}`);
+    })
+    .catch(alert('something went wrong'));
 
     return (
         !loading &&
