@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
-//import { useNavigate } from 'react-router';
+import React, { useState, useRef } from 'react';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'

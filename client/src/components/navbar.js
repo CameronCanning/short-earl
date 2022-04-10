@@ -1,10 +1,9 @@
 import React from 'react';
-import { Nav } from 'react-bootstrap';
-
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function NavBar() {
     return (
+        <>
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className='container-fluid'>
@@ -46,4 +45,6 @@ export default function NavBar() {
                 </div>
             </div>      
         </div>
+        <Outlet/>
+        </>
     )}

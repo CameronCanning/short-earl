@@ -23,11 +23,11 @@ recordRoutes.route("/short").get(function (req, res) {
 
 router.route("/short/:id").get(function (req, res) {
 	let db_connect = dbo.getDb();
-	let myquery = { _id: ObjectId(req.params.id) };
+	let myquery = { _id: req.params.id};
 	db_connect
-		.collection("records")
-		.findOne(myquery, function (err, result) {
-			if (err) throw err;
+		.collection("urls")
+		.findOne(myquery, (err, result) => {
+			if (err) throw err;		
 			res.json(result);
 		});
 });
