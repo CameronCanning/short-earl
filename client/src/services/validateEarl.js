@@ -5,6 +5,7 @@ const validateAlias = (alias) => {
 	const earlPattern = /^[A-Za-z0-9_-]{3,21}$/
 
 	if (alias && !earlPattern.test(alias)) return {status: INVALID, error: 'Must be 3-20 characters using only Aa-Zz, 0-9, -, _'};
+	if (alias === 'app') return {status: INVALID, error: 'Alias is taken'};
 	return {status: VALID, error: ''};
 }
 
@@ -26,7 +27,6 @@ const validateURL = (url) => {
 }
 
 export const validateEarl = (earl) => {
-	console.log('val');
 	return {
 		long: validateURL(earl.long),
 		short: validateAlias(earl.short)

@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams} from 'react-router-dom';
 const axios = require('axios');
 
 
 const Redirect = () => {
-    let { earl } = useParams();
-    const lookupRedirect = async () => {
-        const res = await axios.get('http://localhost:5000/short/'+earl);
-        console.log(res.data.long);    
-        if (res) window.location.href = res.data.long;
-    }    
-    lookupRedirect();
-    return <p>Short Earl is Redirecting You...</p>
+    const [loading, setLoading] = useState(true);
+    const { earl } = useParams();
+
+    axios.get(`http://localhost:5000/short/${earl}`)
+    .then( (res) => {
+        console.log(res.data.long);
+    });
+
+    return (
+        !loading &&
+        <p>Short Earl is Redirecting You...</p>
+    )
 }
 export default Redirect;

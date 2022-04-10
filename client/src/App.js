@@ -18,7 +18,3 @@ const App = () => {
 }
 
 export default App;
-//<NavBar/>
-//<Route path='/' element={<Navigate to='/app'/>}/>   
-//<Route exact path="/" element={<RecordList />} />
-//<Route path="/edit/:id" element={<Edit />} />

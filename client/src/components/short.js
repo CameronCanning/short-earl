@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -7,6 +7,10 @@ const axios = require('axios');
 
 
 const Short = () => {
+    useEffect( () => {
+
+    });
+
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -25,17 +29,25 @@ const Short = () => {
     const [showTooltip, setShowTooltip] = useState(false);
     const target = useRef(null);
     
-
-
     const DOMAIN = 'https://shortearl.com/';
+
+    const setValidationByName = (formName, {_status, _error} = {}) => {
+        setValidation((prev) => {
+            return {...prev, [formName]: {status: _status, error: _error}}
+        });
+    }
 
     const resetForm = () => {
         setForm({long: '', short: ''});
         setComplete(false);
     }
-    const updateForm = (value) => {
+
+    const updateForm = ({field, value}) => {
+        if (!value) {
+            setValidationByName(field);
+        }
         return setForm((prev) => {
-            return {...prev, ...value}
+            return {...prev, [field]: value}
         })
     };
 
@@ -45,11 +57,12 @@ const Short = () => {
         const newEarl = {...form};
         let newValidation = validateEarl(newEarl);
         setValidation(newValidation);
-        if (newValidation.short.status === INVALID || newValidation.long.status === INVALID) return;
+        if (newValidation.long.status === INVALID || newValidation.short.status === INVALID) return;
 
         axios.post('http://localhost:5000/short/add', newEarl)
         .then( (res) => {
             if (res.data.status === 'success'){
+                console.log('suc');
                 updateForm({
                     long: form.long,
                     short: DOMAIN + res.data.earl,
@@ -85,10 +98,10 @@ const Short = () => {
                 <input                 
                     readOnly={complete}
                     type='text'
-                    className={'form-control form-control-lg bg-white ' + validation.long.status}
+                    className={`form-control form-control-lg bg-white ${validation.long.status}`}
                     id='long'
                     value={form.long}
-                    onChange={ (e) => updateForm({ long: e.target.value }) }/>
+                    onChange={ (e) => updateForm({ field: 'long', value: e.target.value }) }/>
                     <div className="invalid-feedback">{validation.long.error}</div> 
             </div>
 
@@ -104,10 +117,10 @@ const Short = () => {
                     <input 
                         readOnly={complete}
                         type='text'
-                        className={'form-control form-control-lg bg-white ' + validation.short.status}
+                        className={`form-control form-control-lg bg-white ${validation.short.status}`}
                         id='short'
                         value={form.short}
-                        onChange={ (e) => updateForm({ short: e.target.value }) }/>  
+                        onChange={ (e) => updateForm({ field: 'short', value: e.target.value }) }/>  
                         {complete &&
                             <>
                             <button 
