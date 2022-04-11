@@ -12,7 +12,7 @@ const Redirect = () => {
         console.log('redirect');
         axios.get(`http://localhost:5000/earl/${earl}`)
             .then((res) => {
-                let url = res.data.long;
+                let url = res.data.url;
                 url = url.replace(/^(https?:\/\/)/, '');
                 console.log('Redirecting to ' + url);
                 window.location.replace(`//${url}`);

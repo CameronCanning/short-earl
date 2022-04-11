@@ -4,22 +4,7 @@ const Earl = require('../models/earl');
 const User = require('../models/user');
 const router = express.Router();
 
-const ObjectId = require("mongodb").ObjectId;
 
-
-/**This section will help you get a list of all the records.
-recordRoutes.route("/short").get(function (req, res) {
-	console.log('/short')
-	let db_connect = dbo.getDb("users");
-	db_connect
-		.collection("records")
-		.find({})
-		.toArray(function (err, result) {
-			if (err) throw err;
-			res.json(result);
-		});
-});
-*/
 
 router.route("/earl/:id").get((req, res) => {
 	let query = { _id: req.params.id};
@@ -30,14 +15,13 @@ router.route("/earl/:id").get((req, res) => {
 				res.status(404).end();
 			}
 			else {
-				console.log(earl);
-				res.json(earl);
+				console.log(`GET failed: ${earl}`);
+				res.json({url: earl.url});
 			}
 		});
 });
 
-router.route("/earl/add").post(function (req, response) {
-	console.log(req.body);
+router.route("/earl/add").post((req, response) => {
 	let res_payload = {
 		earl: '',
 		status: ''
@@ -45,8 +29,10 @@ router.route("/earl/add").post(function (req, response) {
 	const payload = new Earl({
 		_id:  req.body.short ? req.body.short : nanoid(7),
 		url: req.body.long,
-	}) 
-	payload.save().then(savedEarl => {
+	}) ;
+
+	payload.save()
+	.then(savedEarl => {
 		response.json({earl: savedEarl._id, status: 'success'});
 	})
 	.catch((err) => {
@@ -66,17 +52,36 @@ router.route("/earl/add").post(function (req, response) {
 	})			
 });
 
+router.route('/earl/update').put((req, res) => {
+	let currEarl = req.params.earl;
+	let newEarl = req.params.newEarl;
+	if (currEarl && newEarl) {
+		Earl.findById({ _id: currEarl})
+			.then(earl => {
+				earl._id = newEarl
+				earl.save()
+				.catch((err) => {
+					console.log(err);
 
+				})
+			})
+			.catch((err) =>
+			{
+				console.log(err)
+			});
+	}
+	else {
+		res.status(400).end();
+	}
+});
 
-// This section will help you delete a record
-router.route("/:id").delete((req, response) => {
-	let db_connect = dbo.getDb();
-	let myquery = { _id: ObjectId(req.params.id) };
-	db_connect.collection("records").deleteOne(myquery, function (err, obj) {
-		if (err) throw err;
-		console.log("1 document deleted");
-		response.json(obj);
-	});
+router.route("/earl/:id").delete((req, response) => {
+	Earl.deleteOne({_id: req.body.short})
+	.then(response.status(200).end())
+	.catch((err) => {
+		console.log(err);
+		response.status(404).end();
+	})
 });
 
 module.exports = router;
