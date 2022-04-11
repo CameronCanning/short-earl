@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -6,11 +7,14 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(require('./routes'));
-const dbo = require('./db/conn');
 
-app.listen(5000, () => {
-    dbo.connectToServer((err) => {
-        if (err) console.error(err);
-    });
-    console.log(`Server is running on port: ${port}`);
+
+mongoose.connect(process.env.ATLAS_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+
+const conn = mongoose.connection;
+conn.on('error', console.error.bind(console, 'connection error:'));
+conn.once('open', () => console.log('Successfully connected to MongoDB.'));
+
+app.listen(port, () => {
+    console.log('Server is running on Port: ' + port);
 });

@@ -11,4 +11,4 @@ const EarlSchema = new mongoose.Schema({
     },
 });
 
-mongoose.model('Earl', EarlSchema);
+module.exports = mongoose.model('Earl', EarlSchema, 'earls');

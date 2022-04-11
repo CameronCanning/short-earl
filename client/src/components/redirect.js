@@ -10,7 +10,7 @@ const Redirect = () => {
 
     useEffect(() => {
         console.log('redirect');
-        axios.get(`http://localhost:5000/short/${earl}`)
+        axios.get(`http://localhost:5000/earl/${earl}`)
             .then((res) => {
                 let url = res.data.long;
                 url = url.replace(/^(https?:\/\/)/, '');

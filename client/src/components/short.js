@@ -55,7 +55,7 @@ const Short = () => {
             return setValidation(newValidation);
         };
 
-        axios.post('http://localhost:5000/short/add', newEarl)
+        axios.post('http://localhost:5000/earl/add', newEarl)
         .then( (res) => {
             if (res.data.status === 'success'){
                 setForm({
