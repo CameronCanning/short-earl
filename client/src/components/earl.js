@@ -27,7 +27,7 @@ const Earl = () => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [loggedin, setLoggedin] = useState(false);
     const [earls, setEarls] = useState([]);
-    
+
     const target = useRef(null);
     
     const DOMAIN = 'localhost:3000/';
@@ -168,7 +168,7 @@ const Earl = () => {
                 <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
             </div>
         </form>        
-        <Earls/>
+        <Earls earls={earls}/>
         </Card>
         
         
