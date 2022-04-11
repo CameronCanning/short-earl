@@ -2,7 +2,7 @@
 
 
 
-
+$primary: black;
 
 @import 'bootstrap/scss/bootstrap.scss';
 
@@ -10,7 +10,7 @@
 
 .main {
     max-width: 400px;
-    margin: 0 auto; 
+    margin: $spacer auto; 
     float: none;
     
 }

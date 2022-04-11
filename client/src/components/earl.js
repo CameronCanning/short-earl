@@ -3,10 +3,12 @@ import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { Tooltip, Overlay } from 'react-bootstrap';
+import { Card } from "react-bootstrap";
+import Earls from './earls';
 const axios = require('axios');
 
 
-const Short = () => {
+const Earl = () => {
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -23,6 +25,9 @@ const Short = () => {
     });
     const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
+    const [loggedin, setLoggedin] = useState(false);
+    const [earls, setEarls] = useState([]);
+    
     const target = useRef(null);
     
     const DOMAIN = 'localhost:3000/';
@@ -83,8 +88,9 @@ const Short = () => {
 
     return(
         
-        <div className='main border rounded-3 mt-3'> 
-        <form onSubmit={onSubmit} className='needs-validation' noValidate>      
+        //<div className='main border rounded-3 mt-3'> 
+        <Card className='main'>
+        <form onSubmit={onSubmit} className='needs-validation mb-3' noValidate>      
             <div className='form-group p-2'>
                 <label htmlFor='long'>
                     <i className="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
@@ -162,8 +168,10 @@ const Short = () => {
                 <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
             </div>
         </form>        
-        </div>
+        <Earls/>
+        </Card>
+        
         
     )
 }
-export default Short;
+export default Earl;

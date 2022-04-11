@@ -1,7 +1,6 @@
 const express = require("express");
 const { nanoid } = require("nanoid");
 const Earl = require('../models/earl');
-const User = require('../models/user');
 const router = express.Router();
 
 
