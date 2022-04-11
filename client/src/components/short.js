@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -7,10 +7,6 @@ const axios = require('axios');
 
 
 const Short = () => {
-    useEffect( () => {
-
-    });
-
     const [form, setForm] = useState({
         long: '',
         short: '',

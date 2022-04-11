@@ -13,8 +13,7 @@ module.exports = {
   connectToServer: (callback) => {
     client.connect((err, db) => {
       // Verify we got a good "db" object
-      if (db)
-      {
+      if (db) {
         _db = db.db("short-earl");
         console.log("Successfully connected to MongoDB."); 
       }

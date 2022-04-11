@@ -1,12 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 const Broken = () => {
-
-    useEffect(()=>{
-        console.log('broken');
-    },[]);
     return (
-        <div id='main'>
+        <div className='main'>
             <p>Page not Found</p>
         </div>
     )
