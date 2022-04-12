@@ -1,32 +1,55 @@
-import { Accordion, Card } from "react-bootstrap";
+import { ListGroup, Offcanvas, Stack, Button, } from "react-bootstrap";
 
-const Earls = ({ earls }) => {
+const Earls = ({ earl, show ,setShow}) => {
     const testEarls = [
-        {earl: '3ljflj', url: 'https://youtube.com/wowzers'},
         {earl: 'fsdf', url: 'https://youtube.com/wowzers'},
         {earl: '3gge', url: 'https://youtube.com/wowzers'},
         {earl: '3rerwlj', url: 'https://youtube.com/wowzers'},
         {earl: '3231flj', url: 'https://youtube.com/wowzers'}
     ];
-    console.log(testEarls);
+
     return (
-        <Accordion id='earlsAccordion' flush>
-            {
-                testEarls.map((e, i) => {
-                    return (
-                    <Accordion.Item eventKey={i} key={e.earl}>
-                        <Accordion.Header>
-                            <h5>{e.url}</h5>  
-                            <p className='ms-auto'>{e.earl}</p>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            {e.url}
-                        </Accordion.Body>
-                    </Accordion.Item>
-                )})
-            }
-        </Accordion>
+            <Offcanvas show={show} onHide={()=> setShow(false)} placement='end'>
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>Earls</Offcanvas.Title>
+                </Offcanvas.Header>
+                <ListGroup  variant="flush">
+                    <Offcanvas.Body>
+                        {testEarls.map((e,i) => 
+                            <ListGroup.Item key={i}> 
+                                <Stack direction='horizontal'>
+                                    <Stack className='text-truncate'>
+                                        <div className='mb-2 text-truncate'>
+                                            {e.url}
+                                        </div>
+                                        <div  style={{color: '#888'}}>
+                                            {`shortearl.com/${e.earl}`}
+                                        </div>                         
+                                    </Stack>       
+                                    <Button variant="dark ps-3">
+                                        <div className=''>
+                                            Copy
+                                        </div>                                
+                                    </Button>
+                                </Stack>
+                                                
+                            </ListGroup.Item>               
+                        )}
+                        </Offcanvas.Body>
+                </ListGroup>
+            </Offcanvas>
+
     )
 }
 
 export default Earls;
+
+
+/**
+ * <Stack direction="horizontal" gap={3}>
+            <Form.Control className="me-auto form-control-lg" placeholder="Paste your long link here" />
+            <Button variant="danger btn-lg">
+                <p className='ps-3 pe-3 m-0'>Submit</p>
+            </Button>
+        </Stack>
+ */

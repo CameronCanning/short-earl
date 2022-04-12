@@ -8,7 +8,7 @@ import Earls from './earls';
 const axios = require('axios');
 
 
-const Earl = () => {
+const Earl = ({showEarls, setShowEarls}) => {
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -89,6 +89,7 @@ const Earl = () => {
     return(
         
         //<div className='main border rounded-3 mt-3'> 
+        <>
         <Card className='main'>
         <form onSubmit={onSubmit} className='needs-validation mb-3' noValidate>      
             <div className='form-group p-2'>
@@ -98,6 +99,7 @@ const Earl = () => {
                 </label>
                 <input                 
                     readOnly={complete}
+                    placeholder='Paste your URL'
                     type='text'
                     className={`form-control form-control-lg bg-white ${validation.long.status}`}
                     id='long'
@@ -109,7 +111,7 @@ const Earl = () => {
             <div className='form-group p-2'>
                 <label htmlFor='short'>
                     <i className="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
-                    { complete ? ' short-earl' : ' Customize your link (optional)' }
+                    { complete ? ' short-earl' : ' Customize your link' }
                 </label>
                 <div className='input-group input-group-lg has-validation'>
                     {!complete && 
@@ -117,6 +119,7 @@ const Earl = () => {
                     }
                     <input 
                         readOnly={complete}
+                        placeholder='Optional'
                         type='text'
                         className={`form-control form-control-lg bg-white ${validation.short.status}`}
                         id='short'
@@ -162,14 +165,19 @@ const Earl = () => {
                     onClick={resetForm}>
                     Shorten Another
                 </button>
-                <button type='button' key='2' className='btn btn-outline-dark btn-lg'>My Earls</button>
+                <button 
+                    type='button' 
+                    key='2' 
+                    className='btn btn-outline-dark btn-lg'
+                    onClick={()=> setShowEarls(true)}>My Earls</button>
                 </>
                 :
                 <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
             </div>
         </form>        
-        <Earls earls={earls}/>
         </Card>
+        <Earls show={showEarls} setShow={setShowEarls}/>
+        </>
         
         
     )
