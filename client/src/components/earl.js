@@ -63,6 +63,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
         axios.post('http://localhost:5000/earl/add', newEarl)
         .then( (res) => {
             if (res.data.status === 'success'){
+
                 setForm({
                     long: form.long,
                     short: DOMAIN + res.data.earl,
@@ -89,7 +90,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
     return(
         
 
-        <div className={className}>
+        <div className={className + ' pb-3'} >
         <form onSubmit={onSubmit} className='needs-validation' noValidate>      
             <div className='form-group'>
                 <input                 
@@ -133,7 +134,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
                                     }}
                                 ref={target}
                             >
-                                <FontAwesomeIcon icon={faCopy} />
+                                <FontAwesomeIcon className='px-2' icon={faCopy} />
                             </button>
                             <Overlay target={target.current}  show={showTooltip} placement="top">
                                 {(props) => (
@@ -150,24 +151,18 @@ const Earl = ({showEarls, setShowEarls, className}) => {
             <div className='d-grid gap-3 col-12 mx-auto '>
             {complete 
                 ? 
-                <>
                 <button 
                     type='button' 
                     key='1' 
-                    className='btn btn-dark btn-lg' 
+                    className='btn btn-dark btn-lg shorten-button' 
                     onClick={resetForm}>
                     Shorten Another
                 </button>
-                <button 
-                    type='button' 
-                    key='2' 
-                    className='btn btn-outline-dark btn-lg'
-                    onClick={()=> setShowEarls(true)}>My Earls</button>
-                </>
                 :
-                <button id='shorten-button' type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
+                <button type='submit' key='2'  className='btn btn-dark btn-lg shorten-button'>Shorten URL</button>}     
             </div>
-        </form>        
+        </form>  
+        <Earls earls={earls} loggedin={loggedin}/>
         </div>
     )
 }
