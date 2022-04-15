@@ -8,7 +8,7 @@ import Earls from './earls';
 const axios = require('axios');
 
 
-const Earl = ({showEarls, setShowEarls}) => {
+const Earl = ({showEarls, setShowEarls, className}) => {
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -88,38 +88,31 @@ const Earl = ({showEarls, setShowEarls}) => {
 
     return(
         
-        //<div className='main border rounded-3 mt-3'> 
-        <>
-        <Card className='main'>
-        <form onSubmit={onSubmit} className='needs-validation mb-3' noValidate>      
-            <div className='form-group p-2'>
-                <label htmlFor='long'>
-                    <i className="bi bi-link-45deg" style={{fontSize: '1.3rem'}}></i>
-                    {complete ? ' Your long URL'  : ' Paste your URL'}
-                </label>
+
+        <div className={className}>
+        <form onSubmit={onSubmit} className='needs-validation' noValidate>      
+            <div className='form-group'>
                 <input                 
                     readOnly={complete}
+                    autoComplete="off"
                     placeholder='Paste your URL'
                     type='text'
                     className={`form-control form-control-lg bg-white ${validation.long.status}`}
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ field: 'long', value: e.target.value }) }/>
-                    <div className="invalid-feedback">{validation.long.error}</div> 
+                    <div className="invalid-feedback bg-primary">{validation.long.error}</div> 
             </div>
 
-            <div className='form-group p-2'>
-                <label htmlFor='short'>
-                    <i className="bi bi-magic" style={{fontSize: '1.1rem'}}></i>
-                    { complete ? ' short-earl' : ' Customize your link' }
-                </label>
+            <div className='form-group'>
                 <div className='input-group input-group-lg has-validation'>
                     {!complete && 
-                        <span className="input-group-text" id="basic-addon1">{DOMAIN}</span>
+                        <span className="input-group-text" id="basic-addon1">shortearl.com/</span>
                     }
                     <input 
                         readOnly={complete}
-                        placeholder='Optional'
+                        autoComplete="off"
+                        placeholder='Alias (optional)'
                         type='text'
                         className={`form-control form-control-lg bg-white ${validation.short.status}`}
                         id='short'
@@ -142,7 +135,7 @@ const Earl = ({showEarls, setShowEarls}) => {
                             >
                                 <FontAwesomeIcon icon={faCopy} />
                             </button>
-                            <Overlay target={target.current} show={showTooltip} placement="top">
+                            <Overlay target={target.current}  show={showTooltip} placement="top">
                                 {(props) => (
                                     <Tooltip id="copy-tt" {...props}>
                                         Copied
@@ -151,10 +144,10 @@ const Earl = ({showEarls, setShowEarls}) => {
                             </Overlay> 
                             </>
                         }
-                        <div className="invalid-feedback">{validation.short.error}</div>                                                                            
+                        <div className="invalid-feedback bg-primary">{validation.short.error}</div>                                                                            
                 </div>                
             </div>
-            <div className='p-2 pt-3 d-grid gap-3 col-12 mx-auto '>
+            <div className='d-grid gap-3 col-12 mx-auto '>
             {complete 
                 ? 
                 <>
@@ -172,14 +165,12 @@ const Earl = ({showEarls, setShowEarls}) => {
                     onClick={()=> setShowEarls(true)}>My Earls</button>
                 </>
                 :
-                <button type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
+                <button id='shorten-button' type='submit' className='btn btn-dark btn-lg'>Shorten URL</button>}     
             </div>
         </form>        
-        </Card>
-        <Earls show={showEarls} setShow={setShowEarls}/>
-        </>
-        
-        
+        </div>
     )
 }
 export default Earl;
+
+//<Earls show={showEarls} setShow={setShowEarls}/>

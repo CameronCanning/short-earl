@@ -4,6 +4,7 @@ import NavBar from "./components/navbar";
 import Redirect from './components/redirect';
 import Earl from "./components/earl";
 import Earls from './components/earls';
+import Home from './containers/home';
 
 const App = () => {
     const [showEarls, setShowEarls] = useState(false);
@@ -15,7 +16,8 @@ const App = () => {
                 <Route path='/app' element={<NavBar setShowEarls={setShowEarls}/>}>
                     <Route index element={<Earl showEarls={showEarls} setShowEarls={setShowEarls}/>}/> 
                     <Route path='earls' element={<Earls/>}/>
-                </Route>         
+                </Route>     
+                <Route path='layout' element={<Home/>}/>
             </Routes>
         </div>
     )

@@ -3,26 +3,49 @@
 
 $offcanvas-horizontal-width:  100%;
 $offcanvas-transition-duration: .4s;
-$primary: black;
+$primary: #025028;
+$secondary: #222222;
+$light: #F8F8FF;
 
 @import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/variables.scss';
 
 .btn:focus,.btn:active {
     outline: none !important;
     box-shadow: none;
  }
 .main {
-    max-width: 800px;
-    margin: $spacer auto; 
-    float: none;
-    
+    max-width: 992px;
+    margin: auto; 
 }
 
 label {
     font-size: 1rem;
+    color: #F8F8FF;
 
 }
+.input-group-text{
+    background-color: $gray-200;
 
-input:-webkit-autofill { 
-    -webkit-background-clip: text;
 }
+input, #shorten-button {
+    padding: 1rem !important;
+}
+.form-group {
+    padding-bottom: 2rem !important;
+}
+form {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.navbar-brand{
+    font-size: 2rem !important;
+}
+
+img {
+    max-width:100%;
+    height:auto;
+}
+
+body{ margin:0 auto; }
