@@ -1,34 +1,22 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import Layout from './layout';
 import Earl from '../components/earl';
-import NavBar from '../components/navbar';
 
 const Home = () => {
     return(
-        <Container fluid className=''>
-            <Row className='bg-dark'>
-                <div className='main'>
-                    <NavBar/>
+        <Layout>
+            <div className='d-flex align-items-stretch justify-content-between'>
+                <div className='d-flex flex-column m-auto p-3'>
+                    <h1 className='display-1'>Short links,</h1>
+                    <h1 className='display-1'>big results</h1>
                 </div>
-            </Row>
-            <Row className=''>
-                <Row className='main'>
-                        <Col className='d-flex align-items-center p-0'>
-                            <h1 className='display-1'>Short links, big results</h1>
-                        </Col>
-                        <Col className='p-0'>
-                            <img src={require('../assets/images/bitly.png')}/>
-                        </Col>
-                </Row>
-            </Row>
-            <Row className='bg-primary'>
-                <Earl className='main'/>
-                
-            </Row> 
-            <Row>
-
-            </Row>       
-        </Container>
+                <div className='p-3'>
+                    <img src={require('../assets/images/bitly.png')}/>
+                </div>
+            </div>
+            <Earl className='bg-primary'/>     
+        </Layout>
     )
 }
 

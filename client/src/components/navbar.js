@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavLink, Outlet } from "react-router-dom";
 
-export default function NavBar({setShowEarls}) {
+export default function NavBar() {
     return (
-        <>
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark">
                 <div className='container-fluid ps-0 pe-0'>
@@ -37,6 +36,4 @@ export default function NavBar({setShowEarls}) {
                 </div>
             </div>      
         </div>
-        <Outlet/>
-        </>
     )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Broken from './broken';
+
 const axios = require('axios');
 
 
@@ -22,6 +22,6 @@ const Redirect = () => {
             });
     },[]);
 
-    return loading ? null : <Broken/>;
+    return loading ? null : <p>damn</p>//<Broken/>;
 }
 export default Redirect;

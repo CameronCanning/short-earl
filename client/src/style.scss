@@ -17,6 +17,7 @@ $light: #F8F8FF;
 .main {
     max-width: 992px;
     margin: auto; 
+    @extend .px-3;
 }
 
 label {
@@ -49,3 +50,8 @@ img {
 }
 
 body{ margin:0 auto; }
+
+.container-fluid {
+    padding-left: 0;
+    padding-right:0;
+}
