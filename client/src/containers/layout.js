@@ -13,7 +13,7 @@ const Layout = ({children}) => {
                      
             {React.Children.map(children, (child, i) => {
                 return(
-                    <Container fluid className={child.props.className} key={i}>
+                    <Container fluid key={i} className={child.props.parentclass}>
                             <div className='main'>
                                 {child}  
                             </div>

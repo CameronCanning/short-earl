@@ -15,7 +15,7 @@ const Home = () => {
                     <img src={require('../assets/images/bitly.png')}/>
                 </div>
             </div>
-            <Earl className='bg-primary'/>     
+            <Earl parentclass='bg-primary'/>     
         </Layout>
     )
 }
