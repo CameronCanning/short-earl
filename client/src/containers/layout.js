@@ -2,9 +2,9 @@ import React from 'react';
 import { Stack, Row, Container } from 'react-bootstrap';
 import NavBar from '../components/navbar';
 
-const Layout = ({children}) => {
+const Layout = ({children, gap=5}) => {
     return(
-        <Stack gap={5}>
+        <Stack gap={gap}>
             <Container fluid className='bg-dark'>
                 <div className='main'>
                     <NavBar/> 

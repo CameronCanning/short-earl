@@ -4,8 +4,8 @@
 $offcanvas-horizontal-width:  100%;
 $offcanvas-transition-duration: .4s;
 $primary: #025028;
-$secondary: #222222;
-$light: #F8F8FF;
+//$secondary: #222222;
+//$primary: #222222;
 
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap/scss/variables.scss';
@@ -19,29 +19,37 @@ $light: #F8F8FF;
     margin: auto; 
     @extend .px-3;
 }
+.account {
+    max-width: 576px;
+    height: 100%;
+}
 
 label {
     font-size: 1rem;
-    color: #F8F8FF;
 
 }
 .input-group-text{
     background-color: $gray-200;
-
 }
-input, .shorten-button {
+
+input, .btn {
     padding: 1rem !important;
 }
+
 .form-group {
     padding-bottom: 2rem !important;
 }
+
 form {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    //padding-top: 2rem !important;
+    //padding-bottom: 2rem !important;
 }
 
 .navbar-brand{
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
+    //padding-top: 0;
+    //padding-bottom: 0;
+    margin: 0 !important;
 }
 
 img{
