@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 
 const axios = require('axios');
 
-
+const DOMAIN = 'http://short-earl-api.herokuapp.com/earl/'
 const Redirect = () => {
     const { earl } = useParams();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log('redirect');
-        axios.get(`http://localhost:5000/earl/${earl}`)
+        axios.get(`${DOMAIN}${earl}`)
             .then((res) => {
                 let url = res.data.url;
                 url = url.replace(/^(https?:\/\/)/, '');

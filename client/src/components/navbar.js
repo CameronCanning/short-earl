@@ -7,7 +7,7 @@ export default function NavBar({ login }) {
         <div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
                 <div className='container-fluid ps-0 pe-0'>
-                    <NavLink className="navbar-brand mb-0 me-0 h1" to="/">short earl</NavLink>
+                    <NavLink className="navbar-brand mb-0 me-0 h1" to="/app">short earl</NavLink>
                     <button
                         className="navbar-toggler shadow-none border-0 p-0"
                         type="button"
