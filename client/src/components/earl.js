@@ -3,7 +3,6 @@ import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { Tooltip, Overlay } from 'react-bootstrap';
-import { Card } from "react-bootstrap";
 import Earls from './earls';
 const axios = require('axios');
 

@@ -14,7 +14,7 @@ router.route("/earl/:id").get((req, res) => {
 				res.status(404).end();
 			}
 			else {
-				console.log(`GET failed: ${earl}`);
+				console.log(`GET Success: ${earl}`);
 				res.json({url: earl.url});
 			}
 		});

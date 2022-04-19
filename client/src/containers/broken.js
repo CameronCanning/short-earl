@@ -9,7 +9,6 @@ const Broken = () => {
                 <Col className='d-flex align-items-center p-0'>
                     <h1 className='display-1'>Something went wrong?</h1>
                 </Col>
-
             </div> 
         </Layout>
     )
