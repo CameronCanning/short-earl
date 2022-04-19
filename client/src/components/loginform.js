@@ -7,7 +7,7 @@ const LoginForm = () => {
     };
     return (
         <Card className='p-3'>
-            <h3 className='mb-3'>Log in</h3>
+            <h3 className='pb-3'>Log in</h3>
             <Form onSubmit={onSubmit}>
                 <Form.Group className='mb-3'>
                     <Form.Label>Email</Form.Label>
@@ -17,6 +17,7 @@ const LoginForm = () => {
                     <Form.Label htmlFor="inputPassword5">Password</Form.Label>
                     <Form.Control
                         type="password"
+                        placeholder=''
                         id="inputPassword5"
                         aria-describedby="passwordHelpBlock"
                     />

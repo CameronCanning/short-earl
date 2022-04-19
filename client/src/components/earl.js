@@ -26,7 +26,6 @@ const Earl = ({showEarls, setShowEarls, className}) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [loggedin, setLoggedin] = useState(false);
     const [earls, setEarls] = useState([]);
-    const [showAccountModal ,setShowAccountModal] = useState(false);
 
     const target = useRef(null);
     
