@@ -1,6 +1,7 @@
 const express = require("express");
 const { nanoid } = require("nanoid");
 const Earl = require('../models/earl');
+const User = require('../models/user');
 const router = express.Router();
 
 
@@ -21,7 +22,8 @@ router.route("/earl/:id").get((req, res) => {
 });
 
 router.route("/earl/add").post((req, response) => {
-	let res_payload = {
+
+	let resPayload = {
 		earl: '',
 		status: ''
 	};
@@ -29,7 +31,7 @@ router.route("/earl/add").post((req, response) => {
 		_id:  req.body.short ? req.body.short : nanoid(7),
 		url: req.body.long,
 	}) ;
-
+	console.log(payload);
 	payload.save()
 	.then(savedEarl => {
 		response.json({earl: savedEarl._id, status: 'success'});
@@ -38,16 +40,16 @@ router.route("/earl/add").post((req, response) => {
 		console.log(err.message);
 		if (err.code == 11000) {		
 			if (req.body.short) {
-				res_payload = {earl: req.body.short, status: 'earl_taken'};
+				resPayload = {earl: req.body.short, status: 'earl_taken'};
 			}
 			else {							
-				res_payload = {earl: '', status: 'collision_error'};	
+				resPayload = {earl: '', status: 'collision_error'};	
 			}							
 		}
 		else{
-			res_payload = {earl:'', status: 'unknowen_error'};
+			resPayload = {earl:'', status: 'unknowen_error'};
 		}
-		response.json(res_payload);
+		response.json(resPayload);
 	})			
 });
 
@@ -85,7 +87,26 @@ router.route("/earl/:id").delete((req, response) => {
 //END earl/
 
 //START user/
-router.route('/register').post((req, res) => {
-	console.log()
+router.route('/register').post(async (req, res) => {
+	const user = new User(req.body);
+
+	//check if user exists
+	User.findOne({email: req.body.email}, (err, duplicate) => {
+		if (err) res.sendStatus(500);
+		else if (duplicate) res.json({error: 'An account with that email already exists'});
+		//add user
+		else {
+			user.save().then((savedUser) => {
+				console.log(savedUser);
+				res.sendStatus(200);
+			})
+			.catch((err) => {
+				console.log(err.message);
+				res.sendStatus(400);
+			})
+		}	
+	})
 })
+
+
 module.exports = router;

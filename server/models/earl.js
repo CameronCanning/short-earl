@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const EarlSchema = new mongoose.Schema({
     _id: {
         type: String,
-        require: true
+        require: true,
     },
     url: {
         type: String,
