@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const axios = require('axios');
-const DOMAIN = 'http://short-earl.herokuapp.com/'
+const baseURL = process.env.BASE_URL
 const Redirect = () => {
     const { earl } = useParams();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log('redirect');
-        axios.get(`${DOMAIN}earl/${earl}`)
+        axios.get(`${baseURL}earl/${earl}`)
             .then((res) => {
                 let url = res.data.url;
                 url = url.replace(/^(https?:\/\/)/, '');
