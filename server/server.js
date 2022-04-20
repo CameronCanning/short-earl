@@ -16,6 +16,7 @@ const conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
 conn.once('open', () => console.log('Successfully connected to MongoDB.'));
 
+/** 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, "../client/build")));
     app.get("/*", (req, res) => {
@@ -23,7 +24,7 @@ if(process.env.NODE_ENV === 'production'){
         res.sendFile(path.join(__dirname, "../client/build", "index.html"));
       });
 }
-
+*/
 
 app.listen(port, () => {
     console.log('Server is running on Port: ' + port);
