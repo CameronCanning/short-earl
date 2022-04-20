@@ -11,7 +11,12 @@ const UserSchema = new mongoose.Schema({
     },
     earls: {
         type: Array
+    },
+    date: {
+        type: Date,
+        default: Date.now,
     }
+
 });
 
 mongoose.model('User', UserSchema);

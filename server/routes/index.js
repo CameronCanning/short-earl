@@ -4,7 +4,7 @@ const Earl = require('../models/earl');
 const router = express.Router();
 
 
-
+//START	earl/	
 router.route("/earl/:id").get((req, res) => {
 	let query = { _id: req.params.id};
 	Earl.findById(query, (err, earl) => {
@@ -82,5 +82,10 @@ router.route("/earl/:id").delete((req, response) => {
 		response.status(404).end();
 	})
 });
+//END earl/
 
+//START user/
+router.route('/register').post((req, res) => {
+	console.log()
+})
 module.exports = router;
