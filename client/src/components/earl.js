@@ -29,7 +29,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
     const target = useRef(null);
     
-    const baseURL = 'https://short-earl-api.herokuapp.com/' || 'http://localhost:5000/';
+    const baseURL = 'https://short-earl-api.herokuapp.com/'; //|| 'http://localhost:5000/';
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
@@ -65,7 +65,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
                 setForm({
                     long: form.long,
-                    short: baseURL + res.data.earl,
+                    short: 'short-earl.web.app/' + res.data.earl,
                 });
                 setComplete(true);
             }
