@@ -29,7 +29,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
     const target = useRef(null);
     
-    const DOMAIN = 'localhost:3000/';
+    const DOMAIN = 'http://short-earl.herokuapp.com/';
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
@@ -59,7 +59,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
             return setValidation(newValidation);
         };
 
-        axios.post('http://localhost:5000/earl/add', newEarl)
+        axios.post(`${DOMAIN}earl/add`, newEarl)
         .then( (res) => {
             if (res.data.status === 'success'){
 

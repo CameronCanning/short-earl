@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Route, Routes, Navigate} from "react-router-dom";
-import NavBar from "./components/navbar";
 import Redirect from './components/redirect';
-import Broken from './containers/broken';
 import Home from './containers/home';
-import AccountLayout from './containers/accountLayout';
 import Login from './containers/login';
 import Signup from './containers/signup';
+
 const App = () => {
-    const [showEarls, setShowEarls] = useState(false);
     return (
         <div>
             <Routes>     
