@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const axios = require('axios');
-const baseURL = process.env.REACT_APP_BASE_URL || 'localhost:3000';
+const baseURL = 'https://short-earl-api.herokuapp.com/' || 'localhost:3000';
 const Redirect = () => {
     const { earl } = useParams();
     const [loading, setLoading] = useState(true);

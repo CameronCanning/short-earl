@@ -29,7 +29,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
     const target = useRef(null);
     
-    const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000/';
+    const baseURL = 'https://short-earl-api.herokuapp.com/' || 'http://localhost:5000/';
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
