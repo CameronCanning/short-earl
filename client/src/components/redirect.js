@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const axios = require('axios');
-const baseURL = process.env.BASE_URL
+const baseURL = process.env.BASE_URL || 'localhost:3000';
 const Redirect = () => {
     const { earl } = useParams();
     const [loading, setLoading] = useState(true);
