@@ -8,7 +8,7 @@ const Redirect = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log('redirect');
+        console.log('redirect' + `${baseURL}earl/${earl}`);
         axios.get(`${baseURL}earl/${earl}`)
             .then((res) => {
                 let url = res.data.url;
