@@ -27,7 +27,6 @@ UserSchema.pre('save', function (callback) {
         bcrypt.hash(user.password, 10, (err, hash) => {
             if (err) return callback(err);
             user.password = hash;
-            console.log('hashed: '+ hash);
             return callback();
         })
     }
@@ -36,3 +35,4 @@ UserSchema.pre('save', function (callback) {
     }
 })
 module.exports = mongoose.model('User', UserSchema, 'users');
+

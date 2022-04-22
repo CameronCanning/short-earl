@@ -3,25 +3,26 @@ const { nanoid } = require("nanoid");
 const Earl = require('../models/earl');
 const User = require('../models/user');
 const router = express.Router();
-
+const auth = require('../middleware/auth');
 
 //START	earl/	
 router.route("/earl/:id").get((req, res) => {
+
 	let query = { _id: req.params.id};
 	Earl.findById(query, (err, earl) => {
-			if (err) throw err;	
+			if (err) console.log(err.message);	
 			if (!earl) {
 				console.log(`GET failed: ${req.params.id}`);
-				res.status(404).end();
+				res.sendStatus(404);
 			}
 			else {
 				console.log(`GET Success: ${earl}`);
+				//res.status(301).redirect(earl.url);
 				res.json({url: earl.url});
 			}
 		});
 });
-
-router.route("/earl/add").post((req, response) => {
+router.route("/earl/ad").post((req, response) => {
 
 	let resPayload = {
 		earl: '',
@@ -52,7 +53,13 @@ router.route("/earl/add").post((req, response) => {
 		response.json(resPayload);
 	})			
 });
-
+router.route('/earl/add').post(auth, (req, res) => {
+	console.log(res.locals.user);
+	if (res.locals.user) {
+		
+	}
+	
+})
 router.route('/earl/update').put((req, res) => {
 	let currEarl = req.params.earl;
 	let newEarl = req.params.newEarl;
@@ -87,17 +94,18 @@ router.route("/earl/:id").delete((req, response) => {
 //END earl/
 
 //START user/
-router.route('/register').post(async (req, res) => {
+router.route('/user/register').post((req, res) => {
 	const user = new User(req.body);
-
 	//check if user exists
-	User.findOne({email: req.body.email}, (err, duplicate) => {
+	User.findOne({email: req.body.email}, {_id: 1}, (err, duplicate) => {
 		if (err) res.sendStatus(500);
 		else if (duplicate) res.json({error: 'An account with that email already exists'});
 		//add user
 		else {
-			user.save().then((savedUser) => {
-				console.log(savedUser);
+			user.save()
+			.then((savedUser) => {
+				console.log(`Registered: ${savedUser}`);
+				req.session.userId = user._id;
 				res.sendStatus(200);
 			})
 			.catch((err) => {
@@ -108,5 +116,34 @@ router.route('/register').post(async (req, res) => {
 	})
 })
 
+const bycrypt = require('bcrypt');
+router.route('/user/login').post((req, res) => {
+	User.findOne({email: req.body.email}, 'password _id', (err, user) => {
+		if (err) console.log(err.message);
+		else {
+			bycrypt.compare(req.body.password, user.password, (err, match) => {
+				if (err) console.log(err.message);
+				else if (!match) res.json({error: 'incorrect password'});
+				else{
+					req.session.userId = user._id;
+					res.sendStatus(200);
+				}
+			})
+		}
+	})
+})
 
+router.route('/auth').get((req, res) => {
+	console.log(req.session);
+	if (req.session.userId) {
+		console.log('logged in');
+		res.sendStatus(200);
+	}
+	else {
+		console.log('logged out');
+		res.sendStatus(400);
+	}
+
+	
+})
 module.exports = router;
