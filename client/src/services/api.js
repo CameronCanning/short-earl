@@ -6,6 +6,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
 }
 
 export default {
+    //res.data: bool
     auth: () => {
         return axios.get(`${baseURL}/user/auth`);
     },

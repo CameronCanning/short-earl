@@ -1,13 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import AuthContext from '../context/AuthContext.js';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { Tooltip, Overlay } from 'react-bootstrap';
 import Earls from './earls';
-const axios = require('axios');
+import api from '../services/api';
 
 
 const Earl = ({showEarls, setShowEarls, className}) => {
+    const { updateAuthenticated } = useContext(AuthContext);
+    useEffect(() => {
+        updateAuthenticated();
+    }, []);
+
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -22,29 +28,12 @@ const Earl = ({showEarls, setShowEarls, className}) => {
             error: ''
         }        
     });
-    
-    const [logged, setLogged] = useState(false);
-    useEffect(() => {
-        axios.get('http://localhost:5000/user/auth')
-        .then((res) => {
-            setLogged(res.data);
-        })
-        .catch((err) => {
-            setLogged(false);
-        })
-    }, []);
 
     const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     const [earls, setEarls] = useState([]);
 
     const target = useRef(null);
-
-    let baseURL = 'https://short-earl-api.herokuapp.com/';
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
-        baseURL = 'http://localhost:5000/';
-    }
-
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
@@ -72,18 +61,18 @@ const Earl = ({showEarls, setShowEarls, className}) => {
         if (newValidation.long.status === INVALID || newValidation.short.status === INVALID){
             return setValidation(newValidation);
         };
-        console.log(baseURL);
         console.log('submit');
-        axios.post(`${baseURL}earl/add`, newEarl)
+
+        api.createEarl(newEarl)
         .then((res) => {
-            if (res.data.status === 'success'){
+            if (res.data.message === 'success'){
                 setForm({
                     long: form.long,
                     short: 'short-earl.web.app/' + res.data.earl,
                 });
                 setComplete(true);
             }
-            else if (res.data.status === 'earl_taken'){
+            else if (res.data.message === 'earl_taken'){
                 setValidation( (prev) => {
                     return { 
                         ...prev,
