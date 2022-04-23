@@ -13,7 +13,7 @@ app.use(session({
     key: 'user_sid',
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     httpOnly: true,
     store: MongoStore.create({mongoUrl: process.env.ATLAS_URI})
 }))

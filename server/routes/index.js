@@ -22,44 +22,58 @@ router.route("/earl/:id").get((req, res) => {
 			}
 		});
 });
-router.route("/earl/ad").post((req, response) => {
 
-	let resPayload = {
-		earl: '',
-		status: ''
-	};
-	const payload = new Earl({
+router.route('/earl/add').post(auth, (req, res) => {
+	const earl = new Earl({
 		_id:  req.body.short ? req.body.short : nanoid(7),
 		url: req.body.long,
-	}) ;
-	console.log(payload);
-	payload.save()
+	});
+
+	earl.save()
 	.then(savedEarl => {
-		response.json({earl: savedEarl._id, status: 'success'});
+		if (res.locals.user) {
+			res.locals.user.updateOne({$push: {earls: {_id: savedEarl._id}}})
+			.then(userUpdated => {
+				console.log(`${savedEarl._id} added to ${userUpdated._id}`)
+			})
+			.catch((err) => {
+				console.log(err);
+				res.sendStatus(400);
+			})
+		}
+		//non auth user save to session
+		else {
+			console.log(savedEarl);
+			if (req.session.earls) {
+				if (req.session.earls.length < 3) {
+					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
+					res.json({earl: savedEarl.id, message: 'success'});
+				}
+				else {
+					res.status(400).json('Limit exceeded please log in');
+				}				
+			}
+			else {
+				req.session.earls = [savedEarl];
+				res.json({earl: savedEarl.id, message: 'success'});
+			}
+		}
 	})
 	.catch((err) => {
 		console.log(err.message);
-		if (err.code == 11000) {		
-			if (req.body.short) {
-				resPayload = {earl: req.body.short, status: 'earl_taken'};
-			}
-			else {							
-				resPayload = {earl: '', status: 'collision_error'};	
-			}							
+		//duplicate key code
+		if (err.code == 11000) {
+			if (req.body.short)
+				res.status(409).json({message: 'earl_taken'});
+			else 
+				res.status(500).json({message: 'key collision'});
 		}
-		else{
-			resPayload = {earl:'', status: 'unknowen_error'};
+		else {
+			res.status(500).json({message: 'unknowen error'})
 		}
-		response.json(resPayload);
-	})			
+	})	
 });
-router.route('/earl/add').post(auth, (req, res) => {
-	console.log(res.locals.user);
-	if (res.locals.user) {
-		
-	}
-	
-})
+
 router.route('/earl/update').put((req, res) => {
 	let currEarl = req.params.earl;
 	let newEarl = req.params.newEarl;
@@ -70,7 +84,6 @@ router.route('/earl/update').put((req, res) => {
 				earl.save()
 				.catch((err) => {
 					console.log(err);
-
 				})
 			})
 			.catch((err) =>
@@ -94,8 +107,7 @@ router.route("/earl/:id").delete((req, response) => {
 //END earl/
 
 //START user/
-router.route('/user/register').post((req, res) => {
-	const user = new User(req.body);
+router.route('/user/register').post(auth, (req, res) => {
 	//check if user exists
 	User.findOne({email: req.body.email}, {_id: 1}, (err, duplicate) => {
 		if (err) res.sendStatus(500);
@@ -117,7 +129,11 @@ router.route('/user/register').post((req, res) => {
 })
 
 const bycrypt = require('bcrypt');
-router.route('/user/login').post((req, res) => {
+const user = require("../models/user");
+router.route('/user/login').post(auth, (req, res) => {
+	if (res.locals.user){
+		res.status(400).json('Already logged in');
+	}
 	User.findOne({email: req.body.email}, 'password _id', (err, user) => {
 		if (err) console.log(err.message);
 		else {
@@ -133,17 +149,22 @@ router.route('/user/login').post((req, res) => {
 	})
 })
 
-router.route('/auth').get((req, res) => {
-	console.log(req.session);
-	if (req.session.userId) {
-		console.log('logged in');
-		res.sendStatus(200);
+router.route('/user/logout').delete((req, res) => {
+	if (req.session) {
+		req.session.destroy(err => {
+			if (err) {
+				res.sendStatus(400);
+			}
+			else {
+				console.log(req.session.userId + ' logged out');
+				res.sendStatus(200);
+			}
+		});
 	}
-	else {
-		console.log('logged out');
-		res.sendStatus(400);
-	}
-
-	
 })
+
+router.route('/user/auth').get(auth, (req, res) => {
+	res.json(!!res.locals.user);
+})
+//END user/
 module.exports = router;

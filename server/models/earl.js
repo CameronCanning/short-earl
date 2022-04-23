@@ -11,4 +11,8 @@ const EarlSchema = new mongoose.Schema({
     },
 });
 
+EarlSchema.post('save', (doc) => {
+    console.log('saved');
+});
+
 module.exports = mongoose.model('Earl', EarlSchema, 'earls');
