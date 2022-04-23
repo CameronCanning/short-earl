@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { validateSignup } from '../services/validateSignup';
+const axios = require('axios');
+
 const SignupForm = () => {
 
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         email: '',
         password1: '',
@@ -23,6 +26,7 @@ const SignupForm = () => {
         });
     };
 
+    
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -33,8 +37,14 @@ const SignupForm = () => {
         if (newErrors.email || newErrors.password1 || newErrors.password2){
             return setErrors(newErrors);
         }
-        alert('create account');
-
+        
+        axios.post('http://localhost:5000/user/register', {email: newForm.email, password: newForm.password1})
+        .then((res) => {
+            navigate('/app');
+        })
+        .catch(err => {
+            setErrors(prev => {return {...prev, email: err.response.data}});
+        })
     };
     return (
         <Card className='p-3'>

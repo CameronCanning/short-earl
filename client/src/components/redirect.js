@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const axios = require('axios');
-const baseURL = 'https://short-earl-api.herokuapp.com/' || 'localhost:3000';
+let baseURL = 'https://short-earl-api.herokuapp.com/';
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
+    baseURL = 'http://localhost:5000/';
+}
 const Redirect = () => {
     const { earl } = useParams();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log('redirect' + `${baseURL}earl/${earl}`);
+        console.log('redirect: ' + `${baseURL}earl/${earl}`);
         axios.get(`${baseURL}earl/${earl}`)
             .then((res) => {
                 let url = res.data.url;

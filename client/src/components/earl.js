@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
@@ -22,14 +22,29 @@ const Earl = ({showEarls, setShowEarls, className}) => {
             error: ''
         }        
     });
+    
+    const [logged, setLogged] = useState(false);
+    useEffect(() => {
+        axios.get('http://localhost:5000/user/auth')
+        .then((res) => {
+            setLogged(res.data);
+        })
+        .catch((err) => {
+            setLogged(false);
+        })
+    }, []);
+
     const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
-    const [loggedin, setLoggedin] = useState(false);
     const [earls, setEarls] = useState([]);
 
     const target = useRef(null);
-    
-    const baseURL = 'https://short-earl-api.herokuapp.com/'; //|| 'http://localhost:5000/';
+
+    let baseURL = 'https://short-earl-api.herokuapp.com/';
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
+        baseURL = 'http://localhost:5000/';
+    }
+
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
@@ -51,18 +66,17 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
     const onSubmit = (e) => { 
         e.preventDefault();
-        
         const newEarl = {...form};
         let newValidation = validateEarl(newEarl);
         
         if (newValidation.long.status === INVALID || newValidation.short.status === INVALID){
             return setValidation(newValidation);
         };
-
+        console.log(baseURL);
+        console.log('submit');
         axios.post(`${baseURL}earl/add`, newEarl)
-        .then( (res) => {
+        .then((res) => {
             if (res.data.status === 'success'){
-
                 setForm({
                     long: form.long,
                     short: 'short-earl.web.app/' + res.data.earl,
@@ -76,6 +90,16 @@ const Earl = ({showEarls, setShowEarls, className}) => {
                         short: {
                             status: 'is-invalid',
                             error: 'Alias is taken'
+                        }
+                    }});
+            }
+            else {
+                setValidation( (prev) => {
+                    return { 
+                        ...prev,
+                        long: {
+                            status: 'is-invalid',
+                            error: 'Something went wrong'
                         }
                     }});
             }
@@ -161,7 +185,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
                 <button type='submit' key='2'  className='btn btn-dark btn-lg shorten-button'>Shorten URL</button>}     
             </div>
         </form>  
-        <Earls earls={earls} loggedin={loggedin}/>
+        <Earls/>
         </div>
     )
 }

@@ -1,6 +1,25 @@
+import { useState } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 const LoginForm = () => {
+
+    const [form, setForm] = useState({
+        email: '',
+        password1: '',
+    });
+    const [errors, setErrors] = useState({
+        email: '',
+        password1: '',
+    });
+    const updateForm = (e) => {
+        setErrors((prev) => {
+            return {...prev, [e.target.name]: ''}
+        });
+        return setForm((prev) => {
+            return {...prev, [e.target.name]: e.target.value}
+        });
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         alert('login');
@@ -11,14 +30,27 @@ const LoginForm = () => {
             <Form onSubmit={onSubmit}>
                 <Form.Group className='mb-3'>
                     <Form.Label>Email</Form.Label>
-                    <Form.Control placeholder='name@example.com'></Form.Control>
+                    <Form.Control 
+                        placeholder='name@example.com'
+                        required
+                        value={form.email}
+                        onChange={updateForm}
+                        isInvalid={!!errors.email}
+                        type='email'
+                        name='email'>
+
+                    </Form.Control>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                     <Form.Label htmlFor="inputPassword5">Password</Form.Label>
                     <Form.Control
+                        required
+                        value={form.password1}
+                        onChange={updateForm}
+                        isInvalid={!!errors.password1}
+                        name='password1'
                         type="password"
-                        placeholder=''
-                        id="inputPassword5"
+                        id="inputPassword1"
                         aria-describedby="passwordHelpBlock"
                     />
                     <Form.Text id="passwordHelpBlock" muted>

@@ -6,6 +6,7 @@ import Login from './containers/login';
 import Signup from './containers/signup';
 
 const App = () => {
+    const [logged, setLogged] = useState(false);
     return (
         <div>
             <Routes>     
