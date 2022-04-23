@@ -65,43 +65,23 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
         api.createEarl(newEarl)
         .then((res) => {
-            if (res.data.message === 'success'){
-                setForm({
-                    long: form.long,
-                    short: 'short-earl.web.app/' + res.data.earl,
-                });
-                setComplete(true);
-            }
-            else if (res.data.message === 'earl_taken'){
-                setValidation( (prev) => {
-                    return { 
-                        ...prev,
-                        short: {
-                            status: 'is-invalid',
-                            error: 'Alias is taken'
-                        }
-                    }});
+            setForm({
+                long: form.long,
+                short: 'short-earl.web.app/' + res.data,
+            });
+            setComplete(true);
+        })
+        .catch(err => {
+            if (err.resposne.data === 'earl_taken'){
+                setValidationByName('short', {status: 'is-invalid', error: 'Alias is taken'});
             }
             else {
-                setValidation( (prev) => {
-                    return { 
-                        ...prev,
-                        long: {
-                            status: 'is-invalid',
-                            error: 'Something went wrong'
-                        }
-                    }});
+                setValidationByName('long', {status: 'is-invalid', error: 'Server error try again later'});
             }
         })
-        .catch(error => {
-            window.alert(error);
-            return;
-        });
     }
 
     return(
-        
-
         <div className={className + ' pb-3'} >
         <form onSubmit={onSubmit} className='needs-validation' noValidate>      
             <div className='form-group'>

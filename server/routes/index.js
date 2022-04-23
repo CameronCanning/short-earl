@@ -35,7 +35,7 @@ router.route('/earl/create').post(auth, (req, res) => {
 			res.locals.user.updateOne({$push: {earls: {_id: savedEarl._id}}})
 			.then(userUpdated => {
 				console.log(`${savedEarl._id} added to ${userUpdated._id}`)
-				res.sendStatus(200);
+				res.json(savedEarl._id);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -48,7 +48,7 @@ router.route('/earl/create').post(auth, (req, res) => {
 			if (req.session.earls) {
 				if (req.session.earls.length < 3) {
 					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
-					res.sendStatus(200);
+					res.json(savedEarl._id);
 				}
 				else {
 					res.status(400).json('Limit exceeded please log in');
@@ -56,7 +56,7 @@ router.route('/earl/create').post(auth, (req, res) => {
 			}
 			else {
 				req.session.earls = [savedEarl];
-				res.sendStatus(200);
+				res.json(savedEarl._id);
 			}
 		}
 	})
@@ -65,7 +65,7 @@ router.route('/earl/create').post(auth, (req, res) => {
 		//duplicate key code
 		if (err.code == 11000) {
 			if (req.body.short)
-				res.status(409).json({message: 'earl_taken'});
+				res.status(409).json('earl_taken');
 			else 
 				res.sendStatus(500);
 		}
