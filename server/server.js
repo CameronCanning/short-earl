@@ -4,17 +4,26 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const app = express();
 const cors = require('cors');
-const auth = require('./middleware/auth');
-app.use(cors());
 require('dotenv').config({path: './config.env'});
 const port = process.env.PORT || 5000;
+
+app.use(cors(
+    {
+        origin: "http://localhost:3000",
+        methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+        credentials: true
+    }
+));
 
 app.use(session({
     key: 'user_sid',
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     httpOnly: true,
+    cookie: {
+        sameSite: false,
+    },
     store: MongoStore.create({mongoUrl: process.env.ATLAS_URI})
 }))
 app.use(express.json());

@@ -5,24 +5,27 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
     baseURL = 'http://localhost:5000';
 }
 
+const options = {
+    withCredentials: true
+}
 export default {
     //res.data: bool
     auth: () => {
-        return axios.get(`${baseURL}/user/auth`);
+        return axios.get(`${baseURL}/user/auth`, options);
     },
     //payload: {email, password}
     register: (payload) => {
-        return axios.post(`${baseURL}/user/register`, payload);
+        return axios.post(`${baseURL}/user/register`, payload, options);
     },
     //payload: {email, password}
     login: (payload) => {
-        return axios.post(`${baseURL}/user/login`, payload);
+        return axios.post(`${baseURL}/user/login`, payload, options);
     },
     logout: () => {
-        return axios.delete(`${baseURL}/user/logout`);
+        return axios.delete(`${baseURL}/user/logout`, options);
     },
     getEarls: () => {
-        return axios.get(`${baseURL}/user/earls`);
+        return axios.get(`${baseURL}/user/earls`, options);
     },
     //id: earl id
     getEarl: (id) => {
@@ -30,6 +33,6 @@ export default {
     },
     //payload: {_id, url}
     createEarl: (payload) => {
-        return axios.post(`${baseURL}/earl/create`, payload);
+        return axios.post(`${baseURL}/earl/create`, payload, options);
     }
 }
