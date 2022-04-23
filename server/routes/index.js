@@ -134,14 +134,14 @@ router.route('/user/register').post(auth, (req, res) => {
 const bycrypt = require('bcrypt');
 router.route('/user/login').post(auth, (req, res) => {
 	if (res.locals.user){
-		res.status(400).json('Already logged in');
+		res.status(401).json('Already logged in');
 	}
 	User.findOne({email: req.body.email}, 'password _id', (err, user) => {
 		if (err) console.log(err.message);
 		else {
 			bycrypt.compare(req.body.password, user.password, (err, match) => {
 				if (err) console.log(err.message);
-				else if (!match) res.json({error: 'incorrect password'});
+				else if (!match) res.status(401).json('Incorrect password');
 				else{
 					req.session.userId = user._id;
 					res.sendStatus(200);
@@ -155,13 +155,16 @@ router.route('/user/logout').delete((req, res) => {
 	if (req.session) {
 		req.session.destroy(err => {
 			if (err) {
-				res.sendStatus(400);
+				res.sendStatus(500);
 			}
 			else {
 				console.log(req.session.userId + ' logged out');
 				res.sendStatus(200);
 			}
 		});
+	}
+	else {
+		res.status(400).json('No Account logged in');
 	}
 })
 

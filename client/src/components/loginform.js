@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import api from '../services/api';
 const LoginForm = () => {
-
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         email: '',
-        password1: '',
+        password: '',
     });
     const [errors, setErrors] = useState({
         email: '',
-        password1: '',
+        password: '',
     });
     const updateForm = (e) => {
         setErrors((prev) => {
@@ -22,7 +23,14 @@ const LoginForm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        alert('login');
+        const newForm = {...form};
+        api.login(newForm)
+        .then(res => {
+            navigate('/app');
+        })
+        .catch(err => {
+            setErrors((prev) => {return {...prev, password: err.response.data}});
+        })
     };
     return (
         <Card className='p-3'>
@@ -31,28 +39,25 @@ const LoginForm = () => {
                 <Form.Group className='mb-3'>
                     <Form.Label>Email</Form.Label>
                     <Form.Control 
-                        placeholder='name@example.com'
-                        required
                         value={form.email}
                         onChange={updateForm}
                         isInvalid={!!errors.email}
                         type='email'
                         name='email'>
-
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                     <Form.Label htmlFor="inputPassword5">Password</Form.Label>
                     <Form.Control
-                        required
-                        value={form.password1}
+                        value={form.password}
                         onChange={updateForm}
-                        isInvalid={!!errors.password1}
-                        name='password1'
+                        isInvalid={!!errors.password}
+                        name='password'
                         type="password"
                         id="inputPassword1"
                         aria-describedby="passwordHelpBlock"
                     />
+                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                     <Form.Text id="passwordHelpBlock" muted>
 
                     </Form.Text>
