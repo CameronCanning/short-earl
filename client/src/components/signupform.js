@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { validateSignup } from '../services/validateSignup';
-const axios = require('axios');
+import api from '../services/api';
 
 const SignupForm = () => {
 
@@ -37,8 +37,7 @@ const SignupForm = () => {
         if (newErrors.email || newErrors.password1 || newErrors.password2){
             return setErrors(newErrors);
         }
-        
-        axios.post('http://localhost:5000/user/register', {email: newForm.email, password: newForm.password1})
+        api.register({email: newForm.email, password: newForm.password1})
         .then((res) => {
             navigate('/app');
         })

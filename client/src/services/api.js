@@ -5,7 +5,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
     baseURL = 'http://localhost:5000';
 }
 
-export default api = {
+export default {
     auth: () => {
         return axios.get(`${baseURL}/user/auth`);
     },
