@@ -23,7 +23,7 @@ router.route("/earl/:id").get((req, res) => {
 		});
 });
 
-router.route('/earl/add').post(auth, (req, res) => {
+router.route('/earl/create').post(auth, (req, res) => {
 	const earl = new Earl({
 		_id:  req.body.short ? req.body.short : nanoid(7),
 		url: req.body.long,
@@ -35,10 +35,11 @@ router.route('/earl/add').post(auth, (req, res) => {
 			res.locals.user.updateOne({$push: {earls: {_id: savedEarl._id}}})
 			.then(userUpdated => {
 				console.log(`${savedEarl._id} added to ${userUpdated._id}`)
+				res.sendStatus(200);
 			})
 			.catch((err) => {
 				console.log(err);
-				res.sendStatus(400);
+				res.sendStatus(500);
 			})
 		}
 		//non auth user save to session
@@ -47,7 +48,7 @@ router.route('/earl/add').post(auth, (req, res) => {
 			if (req.session.earls) {
 				if (req.session.earls.length < 3) {
 					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
-					res.json({earl: savedEarl.id, message: 'success'});
+					res.sendStatus(200);
 				}
 				else {
 					res.status(400).json('Limit exceeded please log in');
@@ -55,7 +56,7 @@ router.route('/earl/add').post(auth, (req, res) => {
 			}
 			else {
 				req.session.earls = [savedEarl];
-				res.json({earl: savedEarl.id, message: 'success'});
+				res.sendStatus(200);
 			}
 		}
 	})
@@ -66,10 +67,10 @@ router.route('/earl/add').post(auth, (req, res) => {
 			if (req.body.short)
 				res.status(409).json({message: 'earl_taken'});
 			else 
-				res.status(500).json({message: 'key collision'});
+				res.sendStatus(500);
 		}
 		else {
-			res.status(500).json({message: 'unknowen error'})
+			res.sendStatus(500);
 		}
 	})	
 });
@@ -108,28 +109,29 @@ router.route("/earl/:id").delete((req, response) => {
 
 //START user/
 router.route('/user/register').post(auth, (req, res) => {
+
 	//check if user exists
 	User.findOne({email: req.body.email}, {_id: 1}, (err, duplicate) => {
-		if (err) res.sendStatus(500);
-		else if (duplicate) res.json({error: 'An account with that email already exists'});
+		if (err) res.status(500).json({error: err.message});
+		else if (duplicate) res.status(400).send('An account with that email already exists');
 		//add user
 		else {
+			const user = new User(req.body);
 			user.save()
 			.then((savedUser) => {
-				console.log(`Registered: ${savedUser}`);
+				console.log(`Registered: ${savedUser.email}`);
 				req.session.userId = user._id;
 				res.sendStatus(200);
 			})
 			.catch((err) => {
-				console.log(err.message);
-				res.sendStatus(400);
+				console.log(err);
+				res.sendStatus(500);
 			})
 		}	
 	})
 })
 
 const bycrypt = require('bcrypt');
-const user = require("../models/user");
 router.route('/user/login').post(auth, (req, res) => {
 	if (res.locals.user){
 		res.status(400).json('Already logged in');
@@ -165,6 +167,11 @@ router.route('/user/logout').delete((req, res) => {
 
 router.route('/user/auth').get(auth, (req, res) => {
 	res.json(!!res.locals.user);
+})
+
+router.route('/user/earls').get(auth, (req, res) => {
+	console.log('todo');
+	res.json('todo');
 })
 //END user/
 module.exports = router;
