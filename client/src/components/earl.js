@@ -9,11 +9,15 @@ import api from '../services/api';
 
 
 const Earl = ({showEarls, setShowEarls, className}) => {
-    const { updateAuthenticated } = useContext(AuthContext);
-    useEffect(() => {
-        updateAuthenticated();
-    }, []);
-
+    useEffect(()=>{
+        api.getEarls()
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            throw err;
+        })
+    }, [])
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -154,7 +158,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
                 <button type='submit' key='2'  className='btn btn-dark btn-lg shorten-button'>Shorten URL</button>}     
             </div>
         </form>  
-        <Earls/>
+        <Earls earls={earls}/>
         </div>
     )
 }

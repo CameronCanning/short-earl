@@ -173,8 +173,17 @@ router.route('/user/auth').get(auth, (req, res) => {
 })
 
 router.route('/user/earls').get(auth, (req, res) => {
-	console.log('todo');
-	res.json('todo');
+	
+	if (res.locals.user) {
+		console.log(res.locals.user.earls);
+		res.json(JSON.stringify(res.locals.user.earls));
+	}
+	else {
+		res.json(JSON.parse(req.session.earls));
+	}
 })
 //END user/
 module.exports = router;
+
+//TODO
+//think about a better collection schemam meme ->>

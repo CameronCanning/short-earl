@@ -1,26 +1,25 @@
 import { ListGroup, Stack, Button, Card, Container, Row, Col} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
-const Earls = ({ earls, loggedin }) => {
-    const testEarls = [
-        {earl: 'fsdf', url: 'https://youtube.com/wowzers'},
-        {earl: '3gge', url: 'https://youtube.com/wowzers'},
-        {earl: '3rerwlj', url: 'https://youtube.com/wowzers'},
-        {earl: '3231flj', url: 'https://youtube.com/wowzers'}
-    ];
+const Earls = ({ earls }) => {
 
-    return (
-            <Card>
+    const authenticated = useContext(AuthContext);
+
+    if (earls.length != 0) {
+        return (
+            <Card className='mt-3'>
                 <ListGroup  variant="flush">
-                        {!loggedin && 
+                        {!authenticated && 
                         <ListGroup.Item key={-1} className='bg-warning p-3'>
                             <div className='d-flex flex-wrap'>
                                 <span className='me-auto'>Log in to track, manage, and customize your links</span>
                                 <Button className='' variant='outline-dark'>Get started</Button>
                             </div>
                         </ListGroup.Item>}
-                        {testEarls.map((e,i) => 
+                        {earls.map((e,i) => 
                             <ListGroup.Item key={i}> 
                                 <Stack direction='horizontal'>
                                     <Stack className='text-truncate'>
@@ -39,7 +38,12 @@ const Earls = ({ earls, loggedin }) => {
                         )}
                 </ListGroup>
             </Card>
-    )
+        )
+    }
+    else  {
+        return null
+    }
+    
 }
 
 export default Earls;

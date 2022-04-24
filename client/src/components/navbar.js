@@ -2,14 +2,14 @@ import React, {useContext} from 'react';
 import { NavLink } from "react-router-dom";
 import AuthContext from '../context/AuthContext';
 
-export default function NavBar({ login }) {
+export default function NavBar() {
     const {authenticated} = useContext(AuthContext);
     
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
                 <div className='container-fluid ps-0 pe-0'>
-                    <NavLink className="navbar-brand mb-0 me-0 h1" to="/app">{authenticated ? 'short earl: AUTH' : 'short earl: no auth'}</NavLink>
+                    <NavLink className="navbar-brand mb-0 me-0 h1" to="/app">short earl</NavLink>
                     <button
                         className="navbar-toggler shadow-none border-0 p-0"
                         type="button"
@@ -25,11 +25,8 @@ export default function NavBar({ login }) {
                         <NavLink to='/app' as='a' className='nav-link active'>                                       
                             Home
                         </NavLink>
-                        {login ? 
+                        {authenticated ? 
                             <>
-                            <NavLink to='/app/earls' as='a' className='nav-link'>                                       
-                                My Earls
-                            </NavLink> 
                             <NavLink to='/app/earls' as='a' className='nav-link'>                                       
                                 Account
                             </NavLink> 
@@ -42,7 +39,8 @@ export default function NavBar({ login }) {
                             <NavLink to='/app/login' as='a' className='nav-link'>                                       
                                 Log in
                             </NavLink> 
-                            </>}
+                            </>
+                            }
                     </div>
                 </div>   
             </nav>   

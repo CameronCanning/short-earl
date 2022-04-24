@@ -22,12 +22,11 @@ app.use(session({
     saveUninitialized: false,
     httpOnly: true,
     cookie: {
-        sameSite: false,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
     },
     store: MongoStore.create({mongoUrl: process.env.ATLAS_URI})
 }))
 app.use(express.json());
-//app.use(auth);
 
 if (process.env.NODE_ENV === 'development'){
     app.use(require('./middleware/logger'));

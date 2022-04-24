@@ -1,6 +1,11 @@
 const logger = (req, res, next) => {
-    console.log(req.method + ': ' + req.url);
-    next();
+    if (req.url === '/user/auth'){
+        next();
+    }
+    else {
+        console.log(req.method + ': ' + req.url);
+        next();
+    }
 }
 
 module.exports = logger;

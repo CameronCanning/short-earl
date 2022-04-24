@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import AuthContext from '../context/AuthContext';
+
 const LoginForm = () => {
+    const { setAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     const [form, setForm] = useState({
         email: '',
@@ -26,6 +29,7 @@ const LoginForm = () => {
         const newForm = {...form};
         api.login(newForm)
         .then(res => {
+            setAuthenticated(true);
             navigate('/app');
         })
         .catch(err => {
