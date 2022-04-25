@@ -11,15 +11,17 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    earls: {
-        type: Array
-    },
     date: {
         type: Date,
         default: Date.now,
     }
 
 });
+UserSchema.virtual('earls', {
+    ref: 'Earl',
+    localField: '_id',
+    foreignField: 'user_id'
+})
 
 UserSchema.pre('save', function (callback) {
     const user = this;

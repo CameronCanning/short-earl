@@ -29,50 +29,47 @@ router.route('/earl/create').post(auth, (req, res) => {
 		url: req.body.long,
 	});
 
-	earl.save()
-	.then(savedEarl => {
-		if (res.locals.user) {
-			res.locals.user.updateOne({$push: {earls: {_id: savedEarl._id}}})
-			.then(userUpdated => {
-				console.log(`${savedEarl._id} added to ${userUpdated._id}`)
-				res.json(savedEarl._id);
-			})
-			.catch((err) => {
-				console.log(err);
-				res.sendStatus(500);
-			})
-		}
-		//non auth user save to session
-		else {
-			console.log(savedEarl);
-			if (req.session.earls) {
-				if (req.session.earls.length < 3) {
-					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
-					res.json(savedEarl._id);
+	
+	if (res.locals.user) {
+		earl.user_id = res.locals.user._id;
+	}
+	
+	if (req.session.earls && JSON.parse(req.session.earls).length > 2) {
+		res.status(400).json('overlimit')
+	}
+	else {
+		earl.save()
+		.then((savedEarl) => {
+			//temp user
+			if (!res.locals.user) {
+				if (!req.session.earls) {
+					req.session.earls = JSON.stringify([savedEarl]);
+					res.json(savedEarl);
 				}
 				else {
-					res.status(400).json('Limit exceeded please log in');
-				}				
+					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
+					res.json(savedEarl);
+				}
+			}
+			else{
+				console.log(savedEarl);
+				res.json(savedEarl);
+			}
+		})
+		.catch((err) => {
+			//duplicate key code
+			if (err.code == 11000) {
+				if (req.body.short)
+					res.status(409).json('earl_taken');
+				else 
+					res.sendStatus(500);
 			}
 			else {
-				req.session.earls = [savedEarl];
-				res.json(savedEarl._id);
-			}
-		}
-	})
-	.catch((err) => {
-		console.log(err.message);
-		//duplicate key code
-		if (err.code == 11000) {
-			if (req.body.short)
-				res.status(409).json('earl_taken');
-			else 
 				res.sendStatus(500);
-		}
-		else {
-			res.sendStatus(500);
-		}
-	})	
+			}
+			console.log(err.message);
+		})
+	}
 });
 
 router.route('/earl/update').put((req, res) => {
@@ -109,7 +106,6 @@ router.route("/earl/:id").delete((req, response) => {
 
 //START user/
 router.route('/user/register').post(auth, (req, res) => {
-
 	//check if user exists
 	User.findOne({email: req.body.email}, {_id: 1}, (err, duplicate) => {
 		if (err) res.status(500).json({error: err.message});
@@ -120,6 +116,16 @@ router.route('/user/register').post(auth, (req, res) => {
 			user.save()
 			.then((savedUser) => {
 				console.log(`Registered: ${savedUser.email}`);
+				
+				if (req.session.earls) {
+					let earls = JSON.parse(req.session.earls);
+					req.session.earls = null;
+					earls.forEach((ele) => {
+						Earl.findByIdAndUpdate(ele._id, {user_id: savedUser._id})
+						.then(x => console.log(x))
+						
+					})										
+				}
 				req.session.userId = user._id;
 				res.sendStatus(200);
 			})
@@ -136,30 +142,34 @@ router.route('/user/login').post(auth, (req, res) => {
 	if (res.locals.user){
 		res.status(401).json('Already logged in');
 	}
-	User.findOne({email: req.body.email}, 'password _id', (err, user) => {
-		if (err) console.log(err.message);
-		else {
-			bycrypt.compare(req.body.password, user.password, (err, match) => {
-				if (err) console.log(err.message);
-				else if (!match) res.status(401).json('Incorrect password');
-				else{
-					req.session.userId = user._id;
-					res.sendStatus(200);
-				}
-			})
-		}
-	})
+	else {
+		User.findOne({email: req.body.email}, 'password _id', (err, user) => {
+			if (err) console.log(err.message);
+			else if (!user) {
+				res.json('User does not exist');
+			}
+			else {
+				bycrypt.compare(req.body.password, user.password, (err, match) => {
+					if (err) console.log(err.message);
+					else if (!match) res.status(401).json('Incorrect password');
+					else{
+						req.session.userId = user._id;
+						res.sendStatus(200);
+					}
+				})
+			}
+		})
+	}
 })
 
-router.route('/user/logout').delete((req, res) => {
-	if (req.session) {
+router.route('/user/logout').delete(auth, (req, res) => {
+	if (res.locals.user) {
 		req.session.destroy(err => {
 			if (err) {
 				res.sendStatus(500);
 			}
-			else {
-				console.log(req.session.userId + ' logged out');
-				res.sendStatus(200);
+			else {	
+				res.clearCookie('user_sid', {path: '/'}).sendStatus(200);			
 			}
 		});
 	}
@@ -173,17 +183,25 @@ router.route('/user/auth').get(auth, (req, res) => {
 })
 
 router.route('/user/earls').get(auth, (req, res) => {
-	
 	if (res.locals.user) {
-		console.log(res.locals.user.earls);
-		res.json(JSON.stringify(res.locals.user.earls));
+		res.locals.user.populate('earls', 'url -user_id')
+		.then(populatedUser => {
+			console.log(populatedUser.earls);
+			res.json(populatedUser.earls);
+		})
+		.catch(err => {
+			console.log(err.message);
+			res.sendStatus(500);
+		})
 	}
 	else {
-		res.json(JSON.parse(req.session.earls));
+		if (req.session.earls){
+			res.json(JSON.parse(req.session.earls));
+		}
+		else {
+			res.json([]);
+		}
 	}
 })
 //END user/
 module.exports = router;
-
-//TODO
-//think about a better collection schemam meme ->>

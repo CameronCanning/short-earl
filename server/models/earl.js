@@ -9,10 +9,11 @@ const EarlSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
-EarlSchema.post('save', (doc) => {
-    console.log('saved');
-});
 
 module.exports = mongoose.model('Earl', EarlSchema, 'earls');
