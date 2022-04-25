@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import { NavLink } from "react-router-dom";
 import AuthContext from '../context/AuthContext';
-
+import api from '../services/api';
 export default function NavBar() {
-    const {authenticated} = useContext(AuthContext);
+    const {authenticated, loading} = useContext(AuthContext);
     
     return (
         <div>
@@ -22,14 +22,11 @@ export default function NavBar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse justify-content-end me-0 navbar-nav" id="navbarText">  
-                        <NavLink to='/app' as='a' className='nav-link active'>                                       
-                            Home
-                        </NavLink>
-                        {authenticated ? 
+                        {!loading && authenticated ? 
                             <>
-                            <NavLink to='/app/earls' as='a' className='nav-link'>                                       
-                                Account
-                            </NavLink> 
+                            <button type='button' className='nav-link btn' onClick={()=>api.logout()}>                                       
+                                Log out
+                            </button> 
                             </>                            
                             :
                             <>

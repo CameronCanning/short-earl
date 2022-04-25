@@ -32,8 +32,8 @@ const LoginForm = () => {
             setAuthenticated(true);
             navigate('/app');
         })
-        .catch(err => {
-            setErrors((prev) => {return {...prev, password: err.response.data}});
+        .catch(err => {       
+            setErrors((prev) => {return {...err.response.data}});
         })
     };
     return (
@@ -47,8 +47,8 @@ const LoginForm = () => {
                         onChange={updateForm}
                         isInvalid={!!errors.email}
                         type='email'
-                        name='email'>
-                    </Form.Control>
+                        name='email'/>
+                    <Form.Control.Feedback type="invalid">{errors.emails}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                     <Form.Label htmlFor="inputPassword5">Password</Form.Label>

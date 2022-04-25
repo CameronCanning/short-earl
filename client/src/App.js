@@ -8,17 +8,13 @@ import EmptyHome from './containers/emptyHome';
 import AuthContext from './context/AuthContext';
 
 const App = () => {
-    const { authenticated, updateAuthenticated } = useContext(AuthContext);
-    const [loading, setloading] = useState(true);
+    const { authenticated, updateAuthenticated, setLoading } = useContext(AuthContext);
+    
     useEffect(async () => {
         await updateAuthenticated();
-        setloading(false);
+        setLoading(false);
     }, []);
     
-    if (loading) {
-        return (<EmptyHome/>);
-    }
-    else
     return (
         <div>
                 <Routes>     

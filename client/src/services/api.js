@@ -6,7 +6,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
 }
 
 const options = {
-    withCredentials: true
+    withCredentials: true,
 }
 export default {
     //res.data: bool
