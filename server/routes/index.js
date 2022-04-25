@@ -140,18 +140,20 @@ router.route('/user/register').post(auth, (req, res) => {
 const bycrypt = require('bcrypt');
 router.route('/user/login').post(auth, (req, res) => {
 	if (res.locals.user){
-		res.status(401).json('Already logged in');
+		res.status(401).json({email: 'Already logged in'});
 	}
 	else {
 		User.findOne({email: req.body.email}, 'password _id', (err, user) => {
+			
 			if (err) console.log(err.message);
 			else if (!user) {
-				res.json('User does not exist');
+				console.log(user);
+				res.status(401).json({email: 'User does not exist'});
 			}
 			else {
 				bycrypt.compare(req.body.password, user.password, (err, match) => {
 					if (err) console.log(err.message);
-					else if (!match) res.status(401).json('Incorrect password');
+					else if (!match) res.status(401).json({password: 'Incorrect password'});
 					else{
 						req.session.userId = user._id;
 						res.sendStatus(200);

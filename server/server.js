@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 app.use(cors(
     {
         origin: "http://localhost:3000",
-        methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+        methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
         credentials: true
     }
 ));
