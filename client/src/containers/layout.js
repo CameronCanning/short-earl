@@ -4,7 +4,7 @@ import NavBar from '../components/navbar';
 
 const Layout = ({children, gap=5}) => {
     return(
-        <Stack gap={gap}>
+        <Stack gap={gap} className='h-100'>
             <Container fluid className='bg-dark'>
                 <div className='main'>
                     <NavBar/> 

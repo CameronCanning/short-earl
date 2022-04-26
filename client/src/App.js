@@ -16,7 +16,6 @@ const App = () => {
     }, []);
     
     return (
-        <div>
                 <Routes>     
                     <Route path=':earl' element={<Redirect/>}/>   
                     <Route path='/' element={<Navigate to='/app'/>}/>        
@@ -24,7 +23,6 @@ const App = () => {
                     <Route path='/app/login' element={!authenticated ? <Login/> : <Navigate to='/app'/>}/>
                     <Route path='/app/signup' element={!authenticated ? <Signup/> : <Navigate to='/app'/>}/>
                 </Routes>
-        </div>
     )
 }
 

@@ -6,7 +6,7 @@ const AccountLayout = ({ children }) => {
         <Container fluid className='d-flex justify-content-center container-sm'>
             <div className='account flex-grow-1'>
                 <div className='text-center py-3'>
-                        <NavLink to='/' className='navbar-brand h1 text-dark'>short earl</NavLink>
+                        <NavLink to='/app/' className='navbar-brand h1 text-dark'>short earl</NavLink>
                 </div>
                 {children}
             </div>

@@ -22,7 +22,7 @@ const Earl = ({className}) => {
     }, [])
     useEffect(()=>{
         if (!authenticated) setEarls([]);
-    },[authenticated])
+    }, [authenticated])
 
     const [earls, setEarls] = useState([]);
     const [form, setForm] = useState({
@@ -82,6 +82,7 @@ const Earl = ({className}) => {
                 short: 'short-earl.web.app/' + res.data,
             });
             setComplete(true);
+            setEarls((prev => [...prev, {}]))
         })
         .catch(err => {
             if (err.resposne.data === 'earl_taken'){
@@ -94,8 +95,8 @@ const Earl = ({className}) => {
     }
 
     return(
-        <div className={className + ' py-3'} >
-        <form onSubmit={onSubmit} className='needs-validation' noValidate>      
+        <div className={className + ' py-3 mt-3'} >
+        <form onSubmit={onSubmit} className='needs-validation pb-3' noValidate>      
             <div className='form-group'>
                 <input                 
                     readOnly={complete}

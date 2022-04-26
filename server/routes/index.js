@@ -44,12 +44,11 @@ router.route('/earl/create').post(auth, (req, res) => {
 			if (!res.locals.user) {
 				if (!req.session.earls) {
 					req.session.earls = JSON.stringify([savedEarl]);
-					res.json(savedEarl);
 				}
 				else {
-					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);
-					res.json(savedEarl);
+					req.session.earls = JSON.stringify([...JSON.parse(req.session.earls), savedEarl]);					
 				}
+				res.json(savedEarl._id);
 			}
 			else{
 				console.log(savedEarl._id);

@@ -1,4 +1,5 @@
 import { ListGroup, Stack, Button, Card, Container, Row, Col} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from "react";
@@ -7,20 +8,16 @@ import AuthContext from "../context/AuthContext";
 const Earls = ({ earls }) => {
 
     const { authenticated } = useContext(AuthContext);
-
+    const navigate = useNavigate();
     return (
         <Card className='mt-3'>
             <ListGroup  variant="flush">
-                    {!authenticated ?
+                    {!authenticated &&
                     <ListGroup.Item key={-1} className='bg-warning p-3'>
                         <div className='d-flex flex-wrap'>
-                            <span className='me-auto'>Log in to track, manage, and customize your links</span>
-                            <Button className='' variant='outline-dark'>Get started</Button>
+                            <span className='me-auto align-self-center fs-5'>Log in to track, manage, and customize your links</span>
+                            <Button variant='outline-dark' onClick={()=>{navigate('/app/login')}}>Get started</Button>
                         </div>
-                    </ListGroup.Item>
-                    :
-                    <ListGroup.Item key={-1} className='p-3'>
-                        test
                     </ListGroup.Item>
                     }
                     {earls.map((e,i) => 
@@ -31,7 +28,7 @@ const Earls = ({ earls }) => {
                                         {e.url}
                                     </div>
                                     <div style={{color: '#888'}}>
-                                        {`shortearl.com/${e.earl}`}
+                                        {`shortearl.com/${e._id}`}
                                     </div>                         
                                 </Stack>       
                                 <Button variant="light p-2">                                        
