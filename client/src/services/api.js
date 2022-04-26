@@ -21,7 +21,7 @@ export default {
     login: (payload) => {
         return axios.post(`${baseURL}/user/login`, payload, options);
     },
-    logout: () => {
+    logout: async () => {
         return axios.delete(`${baseURL}/user/logout`, options);
     },
     getEarls: () => {

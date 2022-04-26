@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import AuthContext from '../context/AuthContext';
 import api from '../services/api';
 export default function NavBar() {
-    const {authenticated, loading} = useContext(AuthContext);
+    const {authenticated, updateAuthenticated, loading} = useContext(AuthContext);
     
     return (
         <div>
@@ -24,7 +24,10 @@ export default function NavBar() {
                     <div className="collapse navbar-collapse justify-content-end me-0 navbar-nav" id="navbarText">  
                         {!loading && authenticated ? 
                             <>
-                            <button type='button' className='nav-link btn' onClick={()=>api.logout()}>                                       
+                            <button type='button' className='nav-link btn' onClick={async () => {
+                                await api.logout();
+                                updateAuthenticated()
+                            }}>                                       
                                 Log out
                             </button> 
                             </>                            

@@ -8,16 +8,23 @@ import Earls from './earls';
 import api from '../services/api';
 
 
-const Earl = ({showEarls, setShowEarls, className}) => {
+const Earl = ({className}) => {
+    const { authenticated } = useContext(AuthContext);
     useEffect(()=>{
         api.getEarls()
         .then(res => {
             console.log(res.data);
+            setEarls(res.data);
         })
         .catch(err => {
             throw err;
         })
     }, [])
+    useEffect(()=>{
+        if (!authenticated) setEarls([]);
+    },[authenticated])
+
+    const [earls, setEarls] = useState([]);
     const [form, setForm] = useState({
         long: '',
         short: '',
@@ -35,7 +42,8 @@ const Earl = ({showEarls, setShowEarls, className}) => {
 
     const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
-    const [earls, setEarls] = useState([]);
+    
+    
 
     const target = useRef(null);
 
@@ -86,7 +94,7 @@ const Earl = ({showEarls, setShowEarls, className}) => {
     }
 
     return(
-        <div className={className + ' pb-3'} >
+        <div className={className + ' py-3'} >
         <form onSubmit={onSubmit} className='needs-validation' noValidate>      
             <div className='form-group'>
                 <input                 
@@ -100,7 +108,6 @@ const Earl = ({showEarls, setShowEarls, className}) => {
                     onChange={ (e) => updateForm({ field: 'long', value: e.target.value }) }/>
                     <div className="invalid-feedback bg-primary">{validation.long.error}</div> 
             </div>
-
             <div className='form-group'>
                 <div className='input-group input-group-lg has-validation'>
                     {!complete && 

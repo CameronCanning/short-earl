@@ -35,9 +35,6 @@ if (process.env.NODE_ENV === 'development'){
 
 app.use(require('./routes'));
 
-
-
-
 mongoose.connect(process.env.ATLAS_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const conn = mongoose.connection;

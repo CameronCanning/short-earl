@@ -52,8 +52,8 @@ router.route('/earl/create').post(auth, (req, res) => {
 				}
 			}
 			else{
-				console.log(savedEarl);
-				res.json(savedEarl);
+				console.log(savedEarl._id);
+				res.json(savedEarl._id);
 			}
 		})
 		.catch((err) => {
@@ -171,6 +171,7 @@ router.route('/user/logout').delete(auth, (req, res) => {
 				res.sendStatus(500);
 			}
 			else {	
+				console.log('Logged out: ' + res.locals.user._id);
 				res.clearCookie('user_sid', {path: '/'}).sendStatus(200);			
 			}
 		});
