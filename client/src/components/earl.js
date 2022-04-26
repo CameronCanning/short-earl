@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext.js';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CopyButton from './copyButton';
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
-import { Tooltip, Overlay } from 'react-bootstrap';
+import { Tooltip, Overlay, Alert } from 'react-bootstrap';
 import Earls from './earls';
 import api from '../services/api';
 
@@ -43,8 +44,6 @@ const Earl = ({className}) => {
     const [complete, setComplete] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     
-    
-
     const target = useRef(null);
 
     const setValidationByName = (formName, {status, error}) => {
@@ -73,7 +72,6 @@ const Earl = ({className}) => {
         if (newValidation.long.status === INVALID || newValidation.short.status === INVALID){
             return setValidation(newValidation);
         };
-        console.log('submit');
 
         api.createEarl(newEarl)
         .then((res) => {
@@ -82,10 +80,10 @@ const Earl = ({className}) => {
                 short: 'short-earl.web.app/' + res.data,
             });
             setComplete(true);
-            setEarls((prev => [...prev, {}]))
+            setEarls((prev => [{_id: res.data, url: form.long}, ...prev]))
         })
         .catch(err => {
-            if (err.resposne.data === 'earl_taken'){
+            if (err.response.status === 409){
                 setValidationByName('short', {status: 'is-invalid', error: 'Alias is taken'});
             }
             else {
@@ -96,7 +94,7 @@ const Earl = ({className}) => {
 
     return(
         <div className={className + ' py-3 mt-3'} >
-        <form onSubmit={onSubmit} className='needs-validation pb-3' noValidate>      
+        <form onSubmit={onSubmit} className='needs-validation p' noValidate>      
             <div className='form-group'>
                 <input                 
                     readOnly={complete}
@@ -107,7 +105,7 @@ const Earl = ({className}) => {
                     id='long'
                     value={form.long}
                     onChange={ (e) => updateForm({ field: 'long', value: e.target.value }) }/>
-                    <div className="invalid-feedback bg-primary">{validation.long.error}</div> 
+                    <div className="invalid-feedback">{validation.long.error}</div> 
             </div>
             <div className='form-group'>
                 <div className='input-group input-group-lg has-validation'>
@@ -123,47 +121,22 @@ const Earl = ({className}) => {
                         id='short'
                         value={form.short}
                         onChange={ (e) => updateForm({ field: 'short', value: e.target.value }) }/>  
-                        {complete &&
-                            <>
-                            <button 
-                                className="btn btn-dark" 
-                                type="button" 
-                                onClick={() => {
-                                    navigator.clipboard.writeText(form.short);
-                                    setShowTooltip(true);
-                                    setTimeout(() => {
-                                        target.current.blur(); 
-                                        setShowTooltip(false);                                                 
-                                    }, 1500);
-                                    }}
-                                ref={target}
-                            >
-                                <FontAwesomeIcon className='px-2' icon={faCopy} />
-                            </button>
-                            <Overlay target={target.current}  show={showTooltip} placement="top">
-                                {(props) => (
-                                    <Tooltip id="copy-tt" {...props}>
-                                        Copied
-                                    </Tooltip>
-                                )}
-                            </Overlay> 
-                            </>
-                        }
-                        <div className="invalid-feedback bg-primary">{validation.short.error}</div>                                                                            
+                        {complete && <CopyButton className='border-start' variant='secondary' text={form.short}/>}
+                        <div className="invalid-feedback">{validation.short.error}</div>                                                                            
                 </div>                
             </div>
-            <div className='d-grid gap-3 col-12 mx-auto '>
+            <div className='d-grid gap-3 col-12 mx-auto pb-3'>
             {complete 
                 ? 
                 <button 
                     type='button' 
                     key='1' 
-                    className='btn btn-dark btn-lg shorten-button' 
+                    className='btn btn-dark btn-lg' 
                     onClick={resetForm}>
                     Shorten Another
                 </button>
                 :
-                <button type='submit' key='2'  className='btn btn-dark btn-lg shorten-button'>Shorten URL</button>}     
+                <button type='submit' key='2'  className='btn btn-dark btn-lg '>Shorten URL</button>}     
             </div>
         </form>  
         <Earls earls={earls}/>

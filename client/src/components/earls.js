@@ -1,19 +1,19 @@
 import { ListGroup, Stack, Button, Card, Container, Row, Col} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import CopyButton from "./copyButton";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import api from "../services/api";
 
 const Earls = ({ earls }) => {
 
     const { authenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     return (
-        <Card className='mt-3'>
+        <Card className='my-3 border-0'>
             <ListGroup  variant="flush">
                     {!authenticated &&
-                    <ListGroup.Item key={-1} className='bg-warning p-3'>
+                    <ListGroup.Item key={-1} className='p-3 bg-warning'>
                         <div className='d-flex flex-wrap'>
                             <span className='me-auto align-self-center fs-5'>Log in to track, manage, and customize your links</span>
                             <Button variant='outline-dark' onClick={()=>{navigate('/app/login')}}>Get started</Button>
@@ -31,9 +31,7 @@ const Earls = ({ earls }) => {
                                         {`shortearl.com/${e._id}`}
                                     </div>                         
                                 </Stack>       
-                                <Button variant="light p-2">                                        
-                                    <FontAwesomeIcon className='px-2' icon={faCopy} />                                        
-                                </Button>
+                                <CopyButton  text={`localhost:3000/${e._id}`}/>
                             </Stack>
                         </ListGroup.Item>               
                     )}

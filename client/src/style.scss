@@ -1,11 +1,10 @@
 
 
 
-$offcanvas-horizontal-width:  100%;
-$offcanvas-transition-duration: .4s;
-$primary: #025028;
-//$secondary: #222222;
-//$primary: #222222;
+$primary: #212529;
+$secondary: #F2F3F5;
+$dark: #212529;
+$main-green: #025028;
 
 html, body, #root {
     height: 100vh
@@ -14,10 +13,26 @@ html, body, #root {
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap/scss/variables.scss';
 
-.btn:focus,.btn:active {
+
+.bs-dark {
+    background-color: $dark;
+}
+.btn:focus,.btn:active, .form-control:focus, .form-control:active {
     outline: none !important;
-    box-shadow: none;
+    box-shadow: 0 0 2px  $dark !important;    
+
  }
+
+ .btn-outline-secondary {
+    color: $dark;
+}
+
+.btn, .iconFade {
+    transition: color 0.5s cubic-bezier(0.65, 0.05, 0.36, 1), 
+                background-color 0.5s ease-in-out, 
+                border-color 0.5s ease-in-out, 
+                box-shadow 0.5s ease-in-out;
+}
 .main {
     max-width: 992px;
     margin: auto; 
@@ -67,4 +82,6 @@ body{ margin:0 auto; }
     padding-left: 0;
     padding-right:0;
 }
-
+.bg-main {
+    background-color: #025028;
+}

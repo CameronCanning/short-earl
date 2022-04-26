@@ -18,7 +18,7 @@ const Home = () => {
                     <img src={require('../assets/images/bitly.png')}/>
                 </div>
             </div>
-            <Earl parentclass='bg-primary flex-grow-1'/>     
+            <Earl parentclass='bg-main flex-grow-1'/>     
         </Layout>
     )
 }
