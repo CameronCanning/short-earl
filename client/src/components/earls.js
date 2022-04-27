@@ -19,7 +19,7 @@ const Earls = ({ earls }) => {
     if (currentEarls.length < pageLength && page !== 0) {
         currentEarls.push(...new Array(pageLength - currentEarls.length).fill(null));
     }
-    console.log(currentEarls);
+
     const nextPage = () => {
         if (earls.length >= end) setPage(prev => prev + 1);        
     }
@@ -27,8 +27,6 @@ const Earls = ({ earls }) => {
         if (page !== 0) setPage(prev => prev - 1);
     }
 
-    
-    
     return (
         <Card className='my-3 border-0'>
             {(earls.length !== 0) &&

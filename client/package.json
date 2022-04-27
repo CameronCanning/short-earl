@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mb build ../server/static",
     "deploy": "npx firebase deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
