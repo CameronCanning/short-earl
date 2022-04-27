@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Route, Routes, Navigate} from "react-router-dom";
 import Redirect from './components/redirect';
 import Home from './containers/home';
 import Login from './containers/login';
 import Signup from './containers/signup';
-import EmptyHome from './containers/emptyHome';
 import AuthContext from './context/AuthContext';
 
 const App = () => {
