@@ -14,10 +14,10 @@ const CopyButton = ({ text, variant, variantClick, className }) => {
         }, 1500);     
     }
     const var1 = variant || 'outline-secondary';
-    const var2 = variantClick || 'dark';
+    const var2 = variantClick || 'primary';
     return (
-        <Button variant={ copied ? var2 : var1 } onClick={onClick} className={className}>
-            <FontAwesomeIcon className='mx-1 dark' icon={ copied ? faCheck : faCopy } fixedWidth/>
+        <Button variant={ copied ? var2 : var1 } onClick={onClick} className={className +  ' copy-btn'}>
+            <FontAwesomeIcon className='mx-1 primary' icon={ copied ? faCheck : faCopy } fixedWidth/>
         </Button>
     )
 }

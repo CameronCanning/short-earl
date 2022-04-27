@@ -1,10 +1,7 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext.js';
 import { validateEarl, INVALID } from '../services/validateEarl.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CopyButton from './copyButton';
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
-import { Tooltip, Overlay, Alert } from 'react-bootstrap';
 import Earls from './earls';
 import api from '../services/api';
 
@@ -40,11 +37,7 @@ const Earl = ({className}) => {
             error: ''
         }        
     });
-
     const [complete, setComplete] = useState(false);
-    const [showTooltip, setShowTooltip] = useState(false);
-    
-    const target = useRef(null);
 
     const setValidationByName = (formName, {status, error}) => {
         setValidation((prev) => {
@@ -147,5 +140,3 @@ const Earl = ({className}) => {
     )
 }
 export default Earl;
-
-//<Earls show={showEarls} setShow={setShowEarls}/>

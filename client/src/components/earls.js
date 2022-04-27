@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ListGroup, Stack, Button, Card, Container, Row, Col} from "react-bootstrap";
+import { ListGroup, Stack, Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CopyButton from "./copyButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -67,20 +67,20 @@ const Earls = ({ earls }) => {
                                 <Stack direction='horizontal'>
                                     <Stack className='text-truncate me-auto dark' gap={1}>
                                         <div className=' fw-bold'>
-                                            {`shortearl.com/${e._id}`}
+                                            {`shortearl.herokuapp.com/${e._id}`}
                                         </div>
                                         <div className='text-truncate '>
                                             {e.url}
                                         </div>
                                         {authenticated &&
                                         <div className='c-low'>
-                                            <FontAwesomeIcon className='' icon={faChartSimple} fixedWidth/>
+                                            <FontAwesomeIcon icon={faChartSimple} fixedWidth/>
                                             <span className='ps-1'>{e.clicks}</span>
                                         </div>
                                         }
                                     </Stack>  
                                     <div className='ps-1'>
-                                        <CopyButton className='thick-btn'text={`localhost:3000/${e._id}`}/>
+                                        <CopyButton className='thick-btn' text={`shortearl.herokuapp.com/${e._id}`}/>
                                     </div>     
                                 </Stack>
                             </ListGroup.Item> 
