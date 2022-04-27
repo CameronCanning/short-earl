@@ -30,7 +30,7 @@ app.use(session({
     store: MongoStore.create({mongoUrl: process.env.ATLAS_URI})
 }))
 app.use(express.json());
-
+app.set("trust proxy", 1);
 if (process.env.NODE_ENV === 'development'){
     app.use(require('./middleware/logger'));
 }
