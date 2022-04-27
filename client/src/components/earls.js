@@ -49,12 +49,12 @@ const Earls = ({ earls }) => {
                             </span>       
                             <div className='ms-auto'>
                                 <span className='pe-3' style={{userSelect: 'none'}}>
-                                    {`${page*pageLength+1}-${page*pageLength + pageLength}`}
+                                    {`${start+1}-${end}`}
                                 </span>
                                 <Button className='btn-arrow' disabled={page === 0} onClick={prevPage}>
                                     <FontAwesomeIcon className='' icon={faAngleLeft} fixedWidth/>
                                 </Button>
-                                <Button className='btn-arrow' disabled={earls.length <= page*pageLength + page} onClick={nextPage}>
+                                <Button className='btn-arrow' disabled={earls.length <= end} onClick={nextPage}>
                                     <FontAwesomeIcon className='' icon={faAngleRight} fixedWidth/>
                                 </Button>
                             </div>                 
