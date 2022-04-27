@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 
 //START	earl/	
 router.route("/earl/:id").get((req, res) => {
-	Earl.findOneAndUpdate({ _id: req.params.id}, {$inc: { views: 1 }}, (err, earl) => {
+	Earl.findOneAndUpdate({ _id: req.params.id}, {$inc: { clicks: 1 }}, (err, earl) => {
 			if (err) console.log(err.message);	
 			if (!earl) {
 				console.log(`GET failed: ${req.params.id}`);
