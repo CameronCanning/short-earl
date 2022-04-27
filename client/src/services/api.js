@@ -11,7 +11,7 @@ const options = {
 export default {
     //res.data: bool
     auth: () => {
-        return axios.get(`/user/auth`, options);
+        return axios.get(`user/auth`, options);
     },
     //payload: {email, password}
     register: (payload) => {
