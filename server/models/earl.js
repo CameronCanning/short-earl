@@ -9,6 +9,10 @@ const EarlSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    clicks: {
+        type: Number, 
+        default: 0
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

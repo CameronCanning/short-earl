@@ -7,9 +7,7 @@ const auth = require('../middleware/auth');
 
 //START	earl/	
 router.route("/earl/:id").get((req, res) => {
-
-	let query = { _id: req.params.id};
-	Earl.findById(query, (err, earl) => {
+	Earl.findOneAndUpdate({ _id: req.params.id}, {$inc: { views: 1 }}, (err, earl) => {
 			if (err) console.log(err.message);	
 			if (!earl) {
 				console.log(`GET failed: ${req.params.id}`);
@@ -186,7 +184,7 @@ router.route('/user/auth').get(auth, (req, res) => {
 
 router.route('/user/earls').get(auth, (req, res) => {
 	if (res.locals.user) {
-		res.locals.user.populate('earls', 'url -user_id', null, {sort: {'updatedAt': -1}})
+		res.locals.user.populate('earls', 'url clicks -user_id', null, {sort: {'updatedAt': -1}})
 		.then(populatedUser => {
 			console.log(populatedUser.earls);
 			res.json(populatedUser.earls);

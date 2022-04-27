@@ -17,10 +17,14 @@ html, body, #root {
 .bs-dark {
     background-color: $dark;
 }
-.btn:focus,.btn:active, .form-control:focus, .form-control:active {
+ .form-control:focus, .form-control:active {
     outline: none !important;
     box-shadow: 0 0 2px  $dark !important;    
 
+ }
+ .btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
  }
 
  .btn-outline-secondary {
@@ -42,11 +46,6 @@ html, body, #root {
     max-width: 576px;
     height: 100%;
 }
-
-label {
-    font-size: 1rem;
-
-}
 .input-group-text{
     background-color: $gray-200;
 }
@@ -59,10 +58,6 @@ input, .btn {
     padding-bottom: 2rem !important;
 }
 
-form {
-    //padding-top: 2rem !important;
-    //padding-bottom: 2rem !important;
-}
 
 .navbar-brand{
     font-size: 2.5rem !important;

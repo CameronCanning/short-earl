@@ -83,11 +83,14 @@ const Earl = ({className}) => {
             setEarls((prev => [{_id: res.data, url: form.long}, ...prev]))
         })
         .catch(err => {
-            if (err.response.status === 409){
-                setValidationByName('short', {status: 'is-invalid', error: 'Alias is taken'});
+            if (err.response.data === 'earl_taken'){
+                setValidationByName('short', {status: 'is-invalid', error: 'Alias is taken.'});
+            }
+            else if (err.response.data === 'overlimit') {
+                setValidationByName('long', {status: 'is-invalid', error: 'Limit exceded. Create an account to increase your limit.'});
             }
             else {
-                setValidationByName('long', {status: 'is-invalid', error: 'Server error try again later'});
+                setValidationByName('long', {status: 'is-invalid', error: 'Server error try again later.'});
             }
         })
     }

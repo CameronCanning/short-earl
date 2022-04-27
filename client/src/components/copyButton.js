@@ -7,7 +7,6 @@ const CopyButton = ({ text, variant, variantClick, className }) => {
     const [copied, setCopied] = useState(false);
 
     const onClick = () => {  
-        console.log(text);
         navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => {
@@ -17,8 +16,8 @@ const CopyButton = ({ text, variant, variantClick, className }) => {
     const var1 = variant || 'outline-secondary';
     const var2 = variantClick || 'dark';
     return (
-        <Button variant={copied ? var2 : var1} onClick={onClick} className={className}>
-            <FontAwesomeIcon className='mx-1' icon={copied ? faCheck : faCopy } fixedWidth/>
+        <Button variant={ copied ? var2 : var1 } onClick={onClick} className={className}>
+            <FontAwesomeIcon className='mx-1' icon={ copied ? faCheck : faCopy } fixedWidth/>
         </Button>
     )
 }
