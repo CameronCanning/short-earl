@@ -186,7 +186,7 @@ router.route('/user/earls').get(auth, (req, res) => {
 	if (res.locals.user) {
 		res.locals.user.populate('earls', 'url clicks -user_id', null, {sort: {'updatedAt': -1}})
 		.then(populatedUser => {
-			console.log(populatedUser.earls);
+			console.log('earls: ' + populatedUser.earls.length );
 			res.json(populatedUser.earls);
 		})
 		.catch(err => {

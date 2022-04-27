@@ -134,12 +134,12 @@ const Earl = ({className}) => {
                 <button 
                     type='button' 
                     key='1' 
-                    className='btn btn-dark btn-lg' 
+                    className='btn btn-dark btn-lg thick-btn' 
                     onClick={resetForm}>
                     Shorten Another
                 </button>
                 :
-                <button type='submit' key='2'  className='btn btn-dark btn-lg '>Shorten URL</button>}     
+                <button type='submit' key='2'  className='btn btn-dark btn-lg thick-btn'>Shorten URL</button>}     
             </div>
         </form>  
         <Earls earls={earls}/>

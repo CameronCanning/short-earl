@@ -5,6 +5,7 @@ $primary: #212529;
 $secondary: #F2F3F5;
 $dark: #212529;
 $main-green: #025028;
+$info: #e2e3e5;
 
 html, body, #root {
     height: 100vh
@@ -14,9 +15,23 @@ html, body, #root {
 @import 'bootstrap/scss/variables.scss';
 
 
-.bs-dark {
-    background-color: $dark;
+.c-dark {
+    color: $dark;
 }
+.c-low {
+    color: #555;
+}
+.c-main {
+    color: $main-green;
+}
+.btn-arrow {
+    @extend .btn-secondary;
+    padding: 1rem;
+}
+.btn-arrow:hover, .btn-arrow:focus, .btn-arrow:active {
+    background-color: #e2e3e5;
+}
+
 .form-control:focus, .form-control:active {
     outline: none !important;
     box-shadow: 0 0 2px  $dark !important;    
@@ -28,7 +43,6 @@ html, body, #root {
  }
  .input-group-lg > .form-control{
     border-radius: .25rem;
-
 }
 
 .btn-outline-secondary {
@@ -54,7 +68,7 @@ html, body, #root {
     background-color: $gray-200;
 }
 
-input, .btn {
+input, .thick-btn {
     padding: 1rem !important;
 }
 

@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { ListGroup, Stack, Button, Card, Container, Row, Col} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CopyButton from "./copyButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { faChartSimple, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 
@@ -10,8 +11,27 @@ const Earls = ({ earls }) => {
 
     const { authenticated } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [page, setPage] = useState(0);
+    const pageLength = 5;
+    const start = page*pageLength;
+    const end = page*pageLength + pageLength;
+    const currentEarls = earls.slice(start, end);
+    if (currentEarls.length < pageLength && page !== 0) {
+        currentEarls.push(...new Array(pageLength - currentEarls.length).fill(null));
+    }
+    console.log(currentEarls);
+    const nextPage = () => {
+        if (earls.length >= end) setPage(prev => prev + 1);        
+    }
+    const prevPage = () => {
+        if (page !== 0) setPage(prev => prev - 1);
+    }
+
+    
+    
     return (
         <Card className='my-3 border-0'>
+            {(earls.length !== 0) &&
             <ListGroup  variant="flush">
                     {!authenticated ?
                     <ListGroup.Item key={-1} className='p-3 bg-warning'>
@@ -26,32 +46,55 @@ const Earls = ({ earls }) => {
                         <Stack direction='horizontal'>
                             <span className='text-truncate fs-4'>
                                 Saved Earls
-                            </span>                        
+                            </span>       
+                            <div className='ms-auto'>
+                                <span className='pe-3' style={{userSelect: 'none'}}>
+                                    {`${page*pageLength+1}-${page*pageLength + pageLength}`}
+                                </span>
+                                <Button className='btn-arrow' disabled={page === 0} onClick={prevPage}>
+                                    <FontAwesomeIcon className='' icon={faAngleLeft} fixedWidth/>
+                                </Button>
+                                <Button className='btn-arrow' disabled={earls.length <= page*pageLength + page} onClick={nextPage}>
+                                    <FontAwesomeIcon className='' icon={faAngleRight} fixedWidth/>
+                                </Button>
+                            </div>                 
+
                         </Stack>
                     </ListGroup.Item>
                     }
-                    {earls.map((e,i) => 
-                        <ListGroup.Item key={i}> 
-                            <Stack direction='horizontal'>
-                                <Stack className='text-truncate me-auto' gap={1}>
-                                    <div className='text-truncate'>
-                                        {e.url}
-                                    </div>
-                                    <div style={{color: '#888'}}>
-                                        {`shortearl.com/${e._id}`}
-                                    </div>
-                                    <div>
-                                        <FontAwesomeIcon icon={faChartSimple}/>
-                                        <span className='ps-1'>{e.clicks}</span>
-                                    </div>                     
-                                </Stack>  
-                                <div className='ps-1'>
-                                    <CopyButton text={`localhost:3000/${e._id}`}/>
-                                </div>     
-                            </Stack>
-                        </ListGroup.Item>               
-                    )}
+                    {currentEarls.map((e,i) => {
+                        if (e) {
+                            return (
+                            <ListGroup.Item key={i}> 
+                                <Stack direction='horizontal'>
+                                    <Stack className='text-truncate me-auto dark' gap={1}>
+                                        <div className=' fw-bold'>
+                                            {`shortearl.com/${e._id}`}
+                                        </div>
+                                        <div className='text-truncate '>
+                                            {e.url}
+                                        </div>
+                                        {authenticated &&
+                                        <div className='c-low'>
+                                            <FontAwesomeIcon className='' icon={faChartSimple} fixedWidth/>
+                                            <span className='ps-1'>{e.clicks}</span>
+                                        </div>
+                                        }
+                                    </Stack>  
+                                    <div className='ps-1'>
+                                        <CopyButton className='thick-btn'text={`localhost:3000/${e._id}`}/>
+                                    </div>     
+                                </Stack>
+                            </ListGroup.Item> 
+                            )
+                        }
+                        else {
+                            return <ListGroup.Item key={i} style={i < 4 ? {height:'97px'} : {height:'96px'}}/>
+
+                        }                                
+                    })}
             </ListGroup>
+            }
         </Card>
     )    
 }
