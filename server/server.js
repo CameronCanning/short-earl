@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors(
     {
-        origin: process.env.ENDPOINT || "http://localhost:5000",
+        origin: 'http://localhost:5000',
         methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
         credentials: true
     }
@@ -33,9 +33,9 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'development'){
     app.use(require('./middleware/logger'));
 }
-app.use(express.static(path.join(__dirname, '../client', 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(require('./routes'));
-app.get('/*', (req,res) => {res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'))});
+app.get('/*', (req, res) => {res.sendFile(path.join(__dirname, 'build', 'index.html'))});
 
 mongoose.connect(process.env.ATLAS_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 

@@ -91,7 +91,7 @@ const SignupForm = () => {
                     <Form.Control.Feedback type="invalid">{errors.password2}</Form.Control.Feedback>
                 </Form.Group>
                 <div className='d-grid gap-3 mx-auto pt-3'>
-                    <Button className='' variant='primary' type='submit'>Sign up</Button>
+                    <Button className='thick-btn' variant='primary' type='submit'>Sign up</Button>
                     <NavLink className='mx-auto' to='/app/login'>Log in</NavLink>
                 </div>
             </Form>

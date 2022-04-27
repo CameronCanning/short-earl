@@ -67,7 +67,7 @@ const LoginForm = () => {
                     </Form.Text>
                 </Form.Group>
                 <div className='d-grid gap-3 mx-auto pt-3'>
-                    <Button className='' variant='primary' type='submit'>Log in</Button>
+                    <Button className='thick-btn' variant='primary' type='submit'>Log in</Button>
                     <NavLink className='mx-auto' to='/app/signup'>Create an Account</NavLink>
                 </div>
             </Form>
