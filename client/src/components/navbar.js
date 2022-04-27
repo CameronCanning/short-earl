@@ -4,7 +4,20 @@ import AuthContext from '../context/AuthContext';
 import api from '../services/api';
 export default function NavBar() {
     const {authenticated, updateAuthenticated, loading} = useContext(AuthContext);
-    
+    const logoutClick = async () => {
+        try {
+            await api.logout();
+            updateAuthenticated()
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+    const logoutButton = <button type='button' className='nav-link btn' 
+                            onClick={logoutClick}>                                       
+                            Log out
+                            </button>;
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -23,14 +36,9 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse justify-content-end me-0 navbar-nav" id="navbarText">  
                         {!loading && authenticated ? 
-                            <>
-                            <button type='button' className='nav-link btn' onClick={async () => {
-                                await api.logout();
-                                updateAuthenticated()
-                            }}>                                       
+                            <button type='button' className='nav-link btn' onClick={logoutClick}>                                       
                                 Log out
-                            </button> 
-                            </>                            
+                            </button>
                             :
                             <>
                             <NavLink to='/app/signup' as='a' className='nav-link'>                                       
@@ -47,10 +55,14 @@ export default function NavBar() {
             <div className="collapse" id="navbarToggleExternalContent">  
                 <div >
                     <div className='border-top p-2 ps-0'>
-                        <NavLink className='nav-link link-light ps-0' to='/app'>Home</NavLink>
-                        <NavLink className='nav-link link-light ps-0' to='/app'>My Earls</NavLink>
-                        <NavLink className='nav-link link-light ps-0' to='/login'>Log in</NavLink>
-                        <NavLink className='nav-link link-light ps-0' to='/signup'>Sign up</NavLink>
+                        {authenticated ?
+                            <a type='button' className='nav-link link-light ps-0' onClick={(logoutClick)}>Log out</a>
+                            :
+                            <>
+                            <NavLink className='nav-link link-light ps-0' to='/app/login'>Log in</NavLink>
+                            <NavLink className='nav-link link-light ps-0' to='/app/signup'>Sign up</NavLink>
+                            </>
+                        }
                     </div>
                     
                 </div>

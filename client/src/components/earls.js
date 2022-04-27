@@ -44,8 +44,10 @@ const Earls = ({ earls }) => {
                                         <FontAwesomeIcon icon={faChartSimple}/>
                                         <span className='ps-1'>{e.clicks}</span>
                                     </div>                     
-                                </Stack>       
-                                <CopyButton text={`localhost:3000/${e._id}`}/>
+                                </Stack>  
+                                <div className='ps-1'>
+                                    <CopyButton text={`localhost:3000/${e._id}`}/>
+                                </div>     
                             </Stack>
                         </ListGroup.Item>               
                     )}

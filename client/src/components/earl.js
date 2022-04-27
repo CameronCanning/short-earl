@@ -80,7 +80,7 @@ const Earl = ({className}) => {
                 short: 'short-earl.web.app/' + res.data,
             });
             setComplete(true);
-            setEarls((prev => [{_id: res.data, url: form.long}, ...prev]))
+            setEarls((prev => [{_id: res.data, url: form.long, clicks: 0}, ...prev]))
         })
         .catch(err => {
             if (err.response.data === 'earl_taken'){

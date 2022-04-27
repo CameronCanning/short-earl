@@ -17,17 +17,21 @@ html, body, #root {
 .bs-dark {
     background-color: $dark;
 }
- .form-control:focus, .form-control:active {
+.form-control:focus, .form-control:active {
     outline: none !important;
     box-shadow: 0 0 2px  $dark !important;    
-
+    
  }
- .btn:focus,.btn:active {
+.btn:focus,.btn:active {
     outline: none !important;
     box-shadow: none !important;
  }
+ .input-group-lg > .form-control{
+    border-radius: .25rem;
 
- .btn-outline-secondary {
+}
+
+.btn-outline-secondary {
     color: $dark;
 }
 
