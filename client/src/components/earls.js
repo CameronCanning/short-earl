@@ -29,13 +29,13 @@ const Earls = ({ earls }) => {
 
     return (
         <Card className='my-3 border-0'>
-            {(earls.length !== 0) &&
+            {(true) &&
             <ListGroup  variant="flush">
                     {!authenticated ?
                     <ListGroup.Item key={-1} className='p-3 bg-warning'>
                         <div className='d-flex flex-wrap'>
-                            <span className='me-auto align-self-center fs-5'>Log in to track, manage, and customize your links</span>
-                            <Button variant='outline-dark' onClick={()=>{navigate('/app/login')}}>Get started</Button>
+                            <span className='me-auto align-self-center fs-5'>Log in to track and manage your links!</span>
+                            <Button variant='outline-primary thick-btn' onClick={()=>{navigate('/app/login')}}>Get started</Button>
                         </div>
                     </ListGroup.Item>
                     :
@@ -46,8 +46,8 @@ const Earls = ({ earls }) => {
                                 Saved Earls
                             </span>       
                             <div className='ms-auto'>
-                                <span className='pe-3' style={{userSelect: 'none'}}>
-                                    {`${start+1}-${end}`}
+                                <span className='pe-3 font-monospace' style={{userSelect: 'none'}}>
+                                    {`${start+1}-${earls.length < end ? earls.length : end}`}
                                 </span>
                                 <Button className='btn-arrow' disabled={page === 0} onClick={prevPage}>
                                     <FontAwesomeIcon className='' icon={faAngleLeft} fixedWidth/>

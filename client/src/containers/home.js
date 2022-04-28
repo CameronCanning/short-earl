@@ -6,13 +6,14 @@ import Earl from '../components/earl';
 const Home = () => {
     return(
         <Layout className=''>
-            <div parentclass='bg-white' className='d-flex justify-content-between flex-column-reverse flex-md-row '>
+            <div parentclass='bg-white py-3' className='d-flex justify-content-between flex-column-reverse flex-md-row '>
                 <div className='d-flex flex-shrink-0 my-auto '>
-                    <h1 className='display-4 '>
-                        Short links, big results
+                    <span className='display fw-bold'>
+                        Short links, 
                         <br/>
-                        <small className='text-muted'>word up earl</small>
-                    </h1>
+                        big results
+                        <br/>
+                    </span>
                 </div>
                 <div>
                     <img src={require('../assets/images/bitly.png')}/>

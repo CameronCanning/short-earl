@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Form, Card, Button} from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { validateSignup } from '../services/validateSignup';
 import api from '../services/api';
+import AuthContext from '../context/AuthContext';
 
 const SignupForm = () => {
-
+    const { setAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     const [form, setForm] = useState({
         email: '',
@@ -39,6 +40,7 @@ const SignupForm = () => {
         }
         api.register({email: newForm.email, password: newForm.password1})
         .then((res) => {
+            setAuthenticated(true);
             navigate('/app');
         })
         .catch(err => {

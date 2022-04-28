@@ -25,7 +25,7 @@ app.use(session({
     unset: 'destroy',
     cookie: {
         secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: 'none',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     },
     store: MongoStore.create({mongoUrl: process.env.ATLAS_URI})
 }))

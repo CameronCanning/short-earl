@@ -21,7 +21,7 @@ const Layout = ({children, gap=0}) => {
                             </div>
                     </Container>)
             })}  
-            <Container fluid className='bg-primary text-center text-secondary'>
+            <Container fluid className='bg-main text-center text-secondary'>
                 <span > 
                     <a className='font-monospace footer-text'
                         href='https://github.com/cameroncanning'

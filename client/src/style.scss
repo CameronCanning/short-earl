@@ -97,7 +97,9 @@ input, .thick-btn {
 img{
     width:100%;
 }
-
+.display {
+    font-size: 5rem;
+}
 
 body{ margin:0 auto; }
 
@@ -106,5 +108,5 @@ body{ margin:0 auto; }
     padding-right:0;
 }
 .bg-main {
-    background-color: #025028;
+    background-color: $main-green;
 }
