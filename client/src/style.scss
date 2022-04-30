@@ -97,9 +97,7 @@ input, .thick-btn {
 img{
     width:100%;
 }
-.display {
-    font-size: 5rem;
-}
+
 
 body{ margin:0 auto; }
 
@@ -110,3 +108,12 @@ body{ margin:0 auto; }
 .bg-main {
     background-color: $main-green;
 }
+
+.display {
+    font-size: 2rem;
+}
+@include media-breakpoint-up(sm) {
+    .display {
+        font-size: 3rem;
+    }
+} 

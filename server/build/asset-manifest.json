@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.2fb3195e.css",
-    "main.js": "/static/js/main.58332d39.js",
-    "static/media/bitly.png": "/static/media/bitly.92c64add477f3b599e71.png",
+    "main.css": "/static/css/main.dea74aa0.css",
+    "main.js": "/static/js/main.9883d553.js",
+    "static/media/earl_home.jpeg": "/static/media/earl_home.1c6e2f8e05469408b620.jpeg",
     "index.html": "/index.html",
-    "main.2fb3195e.css.map": "/static/css/main.2fb3195e.css.map",
-    "main.58332d39.js.map": "/static/js/main.58332d39.js.map"
+    "main.dea74aa0.css.map": "/static/css/main.dea74aa0.css.map",
+    "main.9883d553.js.map": "/static/js/main.9883d553.js.map"
   },
   "entrypoints": [
-    "static/css/main.2fb3195e.css",
-    "static/js/main.58332d39.js"
+    "static/css/main.dea74aa0.css",
+    "static/js/main.9883d553.js"
   ]
 }
