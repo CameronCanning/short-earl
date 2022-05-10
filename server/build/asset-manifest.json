@@ -1,14 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.dea74aa0.css",
-    "main.js": "/static/js/main.9883d553.js",
+    "main.js": "/static/js/main.d40eb0f4.js",
     "static/media/earl_home.jpeg": "/static/media/earl_home.1c6e2f8e05469408b620.jpeg",
+    "static/media/earl_broken.png": "/static/media/earl_broken.5a2928d0bc7b23ff0421.png",
     "index.html": "/index.html",
     "main.dea74aa0.css.map": "/static/css/main.dea74aa0.css.map",
-    "main.9883d553.js.map": "/static/js/main.9883d553.js.map"
+    "main.d40eb0f4.js.map": "/static/js/main.d40eb0f4.js.map"
   },
   "entrypoints": [
     "static/css/main.dea74aa0.css",
-    "static/js/main.9883d553.js"
+    "static/js/main.d40eb0f4.js"
   ]
 }
