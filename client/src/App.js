@@ -5,6 +5,7 @@ import Home from './containers/home';
 import Login from './containers/login';
 import Signup from './containers/signup';
 import AuthContext from './context/AuthContext';
+import Broken from './containers/broken';
 
 const App = () => {
     const { authenticated, updateAuthenticated, setLoading } = useContext(AuthContext);
@@ -21,6 +22,7 @@ const App = () => {
                     <Route path='/app' element={<Home/>}/>  
                     <Route path='/app/login' element={!authenticated ? <Login/> : <Navigate to='/app'/>}/>
                     <Route path='/app/signup' element={!authenticated ? <Signup/> : <Navigate to='/app'/>}/>
+                    <Route path='/*' element={<Broken/>}/>
                 </Routes>
     )
 }

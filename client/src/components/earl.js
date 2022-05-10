@@ -11,7 +11,6 @@ const Earl = ({className}) => {
     useEffect(()=>{
         api.getEarls()
         .then(res => {
-            console.log(res.data);
             setEarls(res.data);
         })
         .catch(err => {

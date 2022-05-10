@@ -12,7 +12,6 @@ const Redirect = () => {
         .then((res) => {
             let url = res.data.url;
             url = url.replace(/^(https?:\/\/)/, '');
-            console.log('Redirecting to ' + url);
             window.location.replace(`//${url}`);
         })
         .catch((err) => {
