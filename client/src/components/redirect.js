@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Broken from '../containers/broken';
 import api from '../services/api';
 
 const Redirect = () => {
@@ -19,6 +20,6 @@ const Redirect = () => {
         });
     },[]);
 
-    return loading ? null : <p>damn</p>//<Broken/>;
+    return loading ? null : <Broken/>;
 }
 export default Redirect;

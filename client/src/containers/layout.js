@@ -4,7 +4,7 @@ import NavBar from '../components/navbar';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Layout = ({children, gap=0}) => {
+const Layout = ({children, gap=0, footerClass='bg-main text-secondary'}) => {
     return(
         <Stack gap={gap} className='h-100'>
             <Container fluid className='bg-dark'>
@@ -21,7 +21,7 @@ const Layout = ({children, gap=0}) => {
                             </div>
                     </Container>)
             })}  
-            <Container fluid className='bg-main text-center text-secondary'>
+            <Container fluid className={'text-center fixed-bottom ' + footerClass}>
                 <span > 
                     <a className='font-monospace footer-text'
                         href='https://github.com/cameroncanning'

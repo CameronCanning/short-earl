@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
         let auth;
         try {
             auth = await api.auth();
-            console.log(auth.data);
             setAuthenticated(auth.data);
         }
         catch (e) {
