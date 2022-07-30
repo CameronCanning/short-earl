@@ -69,7 +69,7 @@ const Earl = ({className}) => {
         .then((res) => {
             setForm({
                 long: form.long,
-                short: 'short-earl.web.app/' + res.data,
+                short: 'shortearl.herokuapp.com/' + res.data,
             });
             setComplete(true);
             setEarls((prev => [{_id: res.data, url: form.long, clicks: 0}, ...prev]))
